@@ -1,0 +1,17 @@
+:root {
+  --mason-blue: #0090ff;
+
+  --color-primary: #121212;
+  --color-secondary: #e7e7e7;
+  --color-tertiary: color-mix(in srgb, var(--color-primary) 70%, var(--color-secondary) 30%);
+}
+
+html[data-theme='light'] {
+  --color-primary: #ffffff;
+  --color-secondary: #121212;
+  --color-tertiary: color-mix(in srgb, var(--color-primary) 70%, var(--color-secondary) 30%);
+}
+
+body, html {
+  margin: 0;
+}
