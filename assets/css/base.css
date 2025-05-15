@@ -1,17 +1,32 @@
 :root {
-  --mason-blue: #0090ff;
+  --blue-1: #0048ff;
+  --blue-2: #0060ff;
+  --blue-3: #0078ff;
+  --blue-4: #0090ff;
+  --blue-5: #00a8ff;
+  --blue-6: #00c0ff;
 
-  --color-primary: #121212;
-  --color-secondary: #e7e7e7;
+  --color-primary-2: color-mix(in srgb, var(--color-primary) 95%, var(--color-secondary) 5%);
+  --color-primary-3: color-mix(in srgb, var(--color-primary) 90%, var(--color-secondary) 10%);
+  --color-primary-4: color-mix(in srgb, var(--color-primary) 85%, var(--color-secondary) 15%);
+  --color-primary-5: color-mix(in srgb, var(--color-primary) 80%, var(--color-secondary) 20%);
+  --color-primary-11: color-mix(in srgb, var(--color-primary) 50%, var(--color-secondary) 50%);
+  --color-primary-16: color-mix(in srgb, var(--color-primary) 25%, var(--color-secondary) 75%);
+
   --color-tertiary: color-mix(in srgb, var(--color-primary) 70%, var(--color-secondary) 30%);
+}
+
+:root {
+  --color-primary: #121212;
+  --color-secondary: #ffffff;
 }
 
 html[data-theme='light'] {
   --color-primary: #ffffff;
-  --color-secondary: #121212;
-  --color-tertiary: color-mix(in srgb, var(--color-primary) 70%, var(--color-secondary) 30%);
+  --color-secondary: #404040;
 }
 
 body, html {
   margin: 0;
+  background-color: var(--color-primary)
 }

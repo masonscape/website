@@ -15,11 +15,8 @@ defineProps({
 
 <style>
 .content {
-  grid-area: content;
   margin: 0;
-  padding: 2rem;
   background-color: transparent;
-  top: var(--header-height);
 }
 
 .blogpost h1,
@@ -32,29 +29,18 @@ defineProps({
   margin-bottom: 0.75rem;
   font-weight: 600;
   line-height: 1.3;
-  color: var(--color-secondary);
 }
 
 .blogpost h1 {
-  font-size: 2rem;
   margin-bottom: 1rem;
-}
-
-.blogpost h2 {
-  font-size: 1.75rem;
-}
-
-.blogpost h3 {
-  font-size: 1.5rem;
 }
 
 .blogpost p {
   margin-bottom: 1rem;
-  font-size: 1rem;
 }
 
 .blogpost a {
-  color: var(--mason-blue);
+  color: var(--blue-4);
   text-decoration: none;
 }
 
@@ -83,5 +69,20 @@ defineProps({
   border-radius: 8px;
   overflow-x: auto;
   width: fit-content;
+}
+
+
+abbr {
+position: relative;
+}
+
+abbr:hover::after {
+position: absolute;
+bottom: 100%;
+left: 100%;
+display: block;
+padding: 0em;
+background: black;
+content: attr(title);
 }
 </style>

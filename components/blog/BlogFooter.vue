@@ -11,7 +11,7 @@
 <style scoped>
 .footer {
   display: flex;
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-2);
   grid-area: footer;
   width: 100%;
   height: var(--header-height);

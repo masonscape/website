@@ -1,5 +1,5 @@
 <template>
-  <button class="theme-toggle" @click="toggleTheme" >
+  <button @click="toggleTheme" >
     <Icon v-if="isDarkMode" name="mdi:moon-and-stars" class="theme-icon" />
     <Icon v-else name="mdi:white-balance-sunny" class="theme-icon" />
   </button>
@@ -25,24 +25,8 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.theme-toggle {
-  --theme-toggle-size: 40px;
-  --theme-toggle-margin: calc((var(--header-height) - var(--theme-toggle-size)) / 2);
-
-  background-color: var(--color-secondary);
-  color: var(--color-primary);
-  border: none;
-  cursor: pointer;
-  width: var(--theme-toggle-size);
-  height: var(--theme-toggle-size);
-
-  border-radius: calc(infinity * 1px);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-right: var(--theme-toggle-margin);
+button {
+  all: unset;
 }
 
 .theme-icon {
