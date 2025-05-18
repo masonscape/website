@@ -1,6 +1,6 @@
 ---
-title: Lorem Ipsum
-description: TESTING!
+title: Tooltip Test
+description: This is a test of the tooltip system.
 ---
 
 [
@@ -14,7 +14,23 @@ wiggles
 wiggle
 }
 
+h
+
+::Test
+awesome test
+::
+
+the thing is ::Test
+another test!
+::
+
+j
+
 ## You wanna know what's funny? The funny thing is that [this is another test]
-{```js
-fortnite
-```} and nobody seems to care
+{
+```js
+balls
+```
+} and nobody seems to care
+
+test

@@ -10,23 +10,24 @@
     </div>
     <div class="button-list">
       <LinkButton class="button" icon="grommet-icons:github" href="https://github.com/mason8592/blog" target="_blank"/>
-      <ThemeToggle class="button"/>
+      <ThemeSwitcher class="button"/>
     </div>
   </header>
 </template>
 
 <style scoped>
 .header {
-  --button-size: calc(var(--header-height) / 2.5);
+  --button-size: calc(var(--header-height) / 2);
   --button-margin: calc((var(--header-height) - var(--button-size)) / 2);
 
   display: flex;
   align-items: center;
   justify-content: center;
+  container-type: size;
   background-color: var(--color-primary-2);
   width: 100%;
   top: 0;
-  bottom: calc(100% - var(--header-height));
+  height: var(--header-height);
   z-index: 1000;
 
   border-bottom: 1px var(--color-tertiary) solid
@@ -48,7 +49,7 @@
   width: var(--button-size);
   height: var(--button-size);
 
-  border-radius: calc(infinity * 1px);
+  border-radius: var(--button-size);
 
   display: flex;
   align-items: center;
@@ -69,12 +70,19 @@
 
 .masonlane {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 1.8em;
+  font-size: 50cqh;
 }
 
 .picture {
-  width: 2.4em;
-  height: 2.4em;
+  width: 60cqh;
+  height: 60cqh;
   clip-path: circle(50%);
+}
+
+
+@media (max-width: 20em) {
+  .masonlane {
+    display: none
+  }
 }
 </style>

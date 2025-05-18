@@ -3,13 +3,6 @@ title: Test
 
 ---
 
-# WIGGLE
-blah
-
-blah blah ## test
-
-`wingull`
-
 ```js
 const j = 'test';
 for (let j of ['ahh', 'test']) {
@@ -17,4 +10,4 @@ for (let j of ['ahh', 'test']) {
 }
 ```
 
-[sigma](./sigma)
+[:::sigma:::Balls.:::](./sigma)

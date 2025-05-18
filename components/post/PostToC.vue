@@ -1,20 +1,18 @@
 <template>
-  <div class="sidebar-right">
-    <aside class="toc">
-      <h2>Table of Contents</h2>
-      <ul>
-        <li v-for="link of post.body.toc.links" :key="link.id">
-          <a :href="`#${link.id}`">{{ link.text }}</a>
-          <ul>
-              <li v-for="link1 of link.children" :key="link1.id">
-                  <a :href="`#${link1.id}`">{{ link1.text }}</a>
+  <aside class="toc">
+    <h2>Table of Contents</h2>
+    <ul>
+      <li v-for="link of post.body.toc.links" :key="link.id">
+        <a :href="`#${link.id}`">{{ link.text }}</a>
+        <ul>
+            <li v-for="link1 of link.children" :key="link1.id">
+                <a :href="`#${link1.id}`">{{ link1.text }}</a>
 
-              </li>
-          </ul>
-        </li>
-      </ul>
-    </aside>
-  </div>
+            </li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
 </template>
 
 <script setup>

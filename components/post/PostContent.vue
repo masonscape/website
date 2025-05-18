@@ -9,6 +9,7 @@ defineProps({
 
 <template>
   <section class="content">
+    <PostTitle :title="post.title" />
     <ContentRenderer class="blogpost" :value="post" />
   </section>
 </template>
@@ -68,12 +69,19 @@ defineProps({
   padding: 1.2rem;
   border-radius: 8px;
   overflow-x: auto;
-  width: fit-content;
+  font-size: 0.8em;
+  max-width: fit-content;
+  box-sizing: border-box;
 }
 
+.blogpost pre code {
+  display: block;
+  white-space: pre-wrap; /* Allows wrapping */
+  word-wrap: break-word; /* Breaks long words */
+}
 
 abbr {
-position: relative;
+  position: relative;
 }
 
 abbr:hover::after {

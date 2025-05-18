@@ -70,7 +70,6 @@ const cycleTheme = () => {
   document.documentElement.classList.toggle('light', !currentTheme.value.dark)
 }
 
-// Check for saved theme on load
 onMounted(() => {
   currentTheme.value = document.documentElement.classList[0] === 'dark' ? themeList[0] : themeList[1]
 })

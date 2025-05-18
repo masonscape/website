@@ -11,7 +11,7 @@ defineProps({
   <div class="blog-container">
     <BlogHeader class="header" />
 
-    <BlogContent :post="post" class="content" />
+    <PostContent :post="post" class="content" />
     <!-- <aside class="toc">
       <h2>Table of Contents</h2>
       <ul>
@@ -33,7 +33,7 @@ defineProps({
 
 <style>
 .blog-container {
-  --header-height: 5em;
+  --header-height: 3.5em;
   font-size: 16px;
 }
 
@@ -47,7 +47,6 @@ body {
   flex-direction: column;
   width: 100vw;
   min-height: 100vh;
-  background-color: var(--color-primary);
   color: var(--color-secondary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
@@ -68,11 +67,5 @@ body {
   flex: 1;
   position: relative;
   width: min(48em, 90vw);
-}
-
-@media (max-width: 37.5em) {
-  .header > .button-list {
-    display: none;
-  }
 }
 </style>

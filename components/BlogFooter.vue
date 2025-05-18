@@ -4,7 +4,7 @@
 
 <template>
   <footer class="footer">
-    <h1>footer</h1>
+    <h3>footer</h3>
   </footer>
 </template>
 
@@ -12,7 +12,6 @@
 .footer {
   display: flex;
   background-color: var(--color-primary-2);
-  grid-area: footer;
   width: 100%;
   height: var(--header-height);
   z-index: 1000;
