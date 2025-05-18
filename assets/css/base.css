@@ -16,14 +16,24 @@
   --color-tertiary: color-mix(in srgb, var(--color-primary) 70%, var(--color-secondary) 30%);
 }
 
-:root {
+html.dark {
   --color-primary: #121212;
   --color-secondary: #ffffff;
 }
 
-html[data-theme='light'] {
+html.light {
   --color-primary: #ffffff;
-  --color-secondary: #404040;
+  --color-secondary: #000000;
+}
+
+html.light-pink {
+  --color-primary: #feb6ff;
+  --color-secondary: #510083;
+}
+
+html.black {
+  --color-primary: #000000;
+  --color-secondary: #ffffff;
 }
 
 body, html {
