@@ -1,11 +1,31 @@
 <script setup lang="ts">
+const isSpecialTheme = ref<null | boolean>(null)
 
+onMounted(() => {
+  const targetNode = document.documentElement
+
+  const updateIsSpecialTheme = () => {
+    isSpecialTheme.value = targetNode.getAttribute('is-special-theme') === 'true'
+  }
+
+  updateIsSpecialTheme()
+
+  const observer = new MutationObserver(() => {
+    updateIsSpecialTheme()
+  })
+
+  observer.observe(targetNode, {
+    attributes: true,
+    attributeFilter: ['is-special-theme'],
+  })
+})
 </script>
 
 <template>
   <header class="header">
     <div class="name">
-      <img class="picture" src="public/MasonCircle.svg">
+      <img v-if="!isSpecialTheme" class="picture" src="public/MasonCircle.svg">
+      <MasonPicture v-else class="picture" />
       <h1 class="masonlane">mason lane</h1>
     </div>
     <div class="button-list">
@@ -69,7 +89,7 @@
 }
 
 .masonlane {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Consolas, Cochin, Georgia, Times, 'Times New Roman', serif;
   font-size: 50cqh;
 }
 

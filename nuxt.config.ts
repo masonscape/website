@@ -21,15 +21,19 @@ export default defineNuxtConfig({
   app: {
     head: {
       script: [
-        {
+        { // have to repeat the getInitialTheme and applyTheme logic here, i don't think i can use those functions within the innerHTML
           innerHTML: `
             (function() {
-              var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-              if (prefersDark) {
-                document.documentElement.classList.add('dark');
-              } else {
-                document.documentElement.classList.add('light');
-              }
+              const savedTheme = localStorage.getItem('theme')
+              const initialTheme = savedTheme ? JSON.parse(savedTheme) : document.documentElement.classList.contains('dark') ? themeList[0] : themeList[1]
+
+              document.documentElement.style.setProperty('--color-primary', '#' + initialTheme.primary)
+              document.documentElement.style.setProperty('--color-secondary', '#' + initialTheme.secondary)
+              document.documentElement.setAttribute('is-special-theme', (initialTheme.name !== 'dark' && initialTheme.name !== 'light').toString())
+
+              document.documentElement.classList.toggle('dark', initialTheme.dark)
+              document.documentElement.classList.toggle('light', !initialTheme.dark)
+
             })();
           `,
           type: 'text/javascript',

@@ -1,11 +1,13 @@
 <template>
-  <button @click="cycleTheme" >
+  <button @click="handleClick" >
     <Icon name="material-symbols:palette-outline" class="theme-icon" />
   </button>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue"
+import { useTheme } from '~/store/theme'
+
+const currentTheme = useTheme()
 
 interface Theme {
   name: string,
@@ -43,35 +45,53 @@ const themeList: Theme[] = [
 
 const themeNames = themeList.map(theme => theme.name)
 
-const currentTheme = ref<null | Theme>(null)
+const getInitialTheme = (): Theme => {
+  const savedTheme = localStorage.getItem('theme')
+  const initialTheme = savedTheme ? JSON.parse(savedTheme) : document.documentElement.classList.contains('dark') ? themeList[0] : themeList[1]
 
-const getNextTheme = () => {
-  if (!currentTheme.value) return
+  return initialTheme
+}
 
-  const currentThemeIndex = themeNames.indexOf(currentTheme.value.name)
+const getNextTheme = (currentTheme: Theme): Theme => {
+  const currentThemeIndex = themeNames.indexOf(currentTheme.name)
   const nextThemeIndex =
-    currentThemeIndex === themeList.length - 1 // if current theme is the last theme in the list
-      ? 0 // cycle back to the beginning of the theme list
-      : currentThemeIndex + 1 // else go to the next theme in the list
+    currentThemeIndex === themeList.length - 1 // If current theme is the last theme in the list
+      ? 0 // Cycle back to the beginning of the theme list
+      : currentThemeIndex + 1 // Else go to the next theme in the list
 
   return themeList[nextThemeIndex]
 }
 
-const cycleTheme = () => {
-  const nextTheme = getNextTheme()
-  if (!nextTheme) return
+const applyTheme = (theme: Theme) => {
+  console.log(theme)
+  document.documentElement.style.setProperty('--color-primary', '#' + theme.primary)
+  document.documentElement.style.setProperty('--color-secondary', '#' + theme.secondary)
+  document.documentElement.setAttribute('is-special-theme', (theme.name !== 'dark' && theme.name !== 'light').toString())
 
-  currentTheme.value = nextTheme
+  document.documentElement.classList.toggle('dark', theme.dark)
+  document.documentElement.classList.toggle('light', !theme.dark)
 
-  document.documentElement.style.setProperty('--color-primary', '#' + currentTheme.value.primary)
-  document.documentElement.style.setProperty('--color-secondary', '#' + currentTheme.value.secondary)
+  localStorage.setItem('theme', JSON.stringify(theme))
+}
 
-  document.documentElement.classList.toggle('dark', currentTheme.value.dark)
-  document.documentElement.classList.toggle('light', !currentTheme.value.dark)
+const cycleTheme = (currentTheme: Theme): Theme => {
+  const nextTheme = getNextTheme(currentTheme)
+
+  currentTheme = nextTheme
+  applyTheme(nextTheme)
+
+  return nextTheme
+}
+
+
+const handleClick = () => {
+  if (!currentTheme.value) return
+
+  currentTheme.value = cycleTheme(currentTheme.value)
 }
 
 onMounted(() => {
-  currentTheme.value = document.documentElement.classList[0] === 'dark' ? themeList[0] : themeList[1]
+  currentTheme.value = getInitialTheme()
 })
 </script>
 
