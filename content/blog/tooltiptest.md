@@ -14,12 +14,6 @@ wiggles
 wiggle
 }
 
-h
-
-::Test
-awesome test
-::
-
 the thing is ::Test
 another test!
 ::

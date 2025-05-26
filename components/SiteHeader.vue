@@ -23,13 +23,16 @@ onMounted(() => {
 
 <template>
   <header class="header">
-    <div class="name">
-      <img v-if="!isSpecialTheme" class="picture" src="public/MasonCircle.svg">
-      <MasonPicture v-else class="picture" />
-      <h1 class="masonlane">mason lane</h1>
-    </div>
+    <a class="logolink" href="/">
+      <div class="logo">
+        <div class="picture-wrapper">
+          <div class="placeholder-logo"/>
+          <img v-if="typeof isSpecialTheme === 'boolean' && !isSpecialTheme" class="picture" src="public/MasonCircle.svg">
+          <MasonPicture v-else class="picture" />
+        </div>
+      </div>
+    </a>
     <div class="button-list">
-      <LinkButton class="button" icon="grommet-icons:github" href="https://github.com/mason8592/blog" target="_blank"/>
       <ThemeSwitcher class="button"/>
     </div>
   </header>
@@ -37,9 +40,6 @@ onMounted(() => {
 
 <style scoped>
 .header {
-  --button-size: calc(var(--header-height) / 2);
-  --button-margin: calc((var(--header-height) - var(--button-size)) / 2);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,25 +61,18 @@ onMounted(() => {
   display: flex;
 }
 
-.button {
-  background-color: var(--color-primary-16);
-  color: var(--color-primary);
-  border: none;
-  cursor: pointer;
-  width: var(--button-size);
-  height: var(--button-size);
-
-  border-radius: var(--button-size);
-
+.logolink {
+  text-decoration: none;
+  color: var(--color-secondary);
+  height: var(--header-height);
+  min-width: var(--header-height);
+  max-width: fit-content;
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  margin-right: var(--button-margin);
+  align-items: center;
 }
 
-.name {
-  margin-left: var(--button-margin);
+.logo {
   width: auto;
   position: relative;
   display: flex;
@@ -88,9 +81,21 @@ onMounted(() => {
   gap: 0.8rem;
 }
 
-.masonlane {
-  font-family: Consolas, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 50cqh;
+.placeholder-logo {
+  background: var(--color-secondary);
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+html[is-special-theme="false"] .placeholder-logo {
+  background: linear-gradient(#00c0ff, #0048ff)
+}
+
+.picture-wrapper {
+  width: 60cqh;
+  height: 60cqh;
 }
 
 .picture {
@@ -101,7 +106,7 @@ onMounted(() => {
 
 
 @media (max-width: 20em) {
-  .masonlane {
+  .masonscape {
     display: none
   }
 }

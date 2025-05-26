@@ -64,7 +64,7 @@ const draw = () => {
   if (!canvasRef.value || !secondaryColor.value) return
   const ctx = canvasRef.value.getContext('2d')!
 
-  const colors = generateColorScale(secondaryColor.value, { r: 0x18, g: 0x18, b: 0x18 })
+  const colors = generateColorScale(secondaryColor.value, { r: 0x12, g: 0x12, b: 0x12 })
 
   ctx.fillStyle = colors[0]
   ctx.fillRect(0, 0, 300, 300)

@@ -1,16 +1,20 @@
 <script setup>
-defineProps({
-  post: {
+const props = defineProps({
+  content: {
     type: Object,
     required: true
   }
+})
+
+onMounted(() => {
+  document.title = props.content.title
 })
 </script>
 
 <template>
   <section class="content">
-    <PostTitle :title="post.title" />
-    <ContentRenderer class="blogpost" :value="post" />
+    <ContentTitle :content="content" />
+    <ContentRenderer class="blogpost" :value="content" />
   </section>
 </template>
 
@@ -18,6 +22,8 @@ defineProps({
 .content {
   margin: 0;
   background-color: transparent;
+  position: relative;
+  width: min(44em, 90vw);
 }
 
 .blogpost h1,
@@ -40,11 +46,6 @@ defineProps({
   margin-bottom: 1rem;
 }
 
-.blogpost a {
-  color: var(--blue-4);
-  text-decoration: none;
-}
-
 .blogpost a:hover {
   text-decoration: underline;
 }
@@ -65,13 +66,20 @@ defineProps({
 }
 
 .blogpost pre {
-  background-color: color-mix(in srgb, var(--color-primary) 80%, #808080 10%);
   padding: 1.2rem;
   border-radius: 8px;
   overflow-x: auto;
   font-size: 0.8em;
   max-width: fit-content;
   box-sizing: border-box;
+}
+
+html.light .blogpost pre {
+  background-color: color-mix(in srgb, var(--color-primary) 70%, #ffffff 30%);
+}
+
+html.dark .blogpost pre {
+  background-color: color-mix(in srgb, var(--color-primary) 70%, #000000 30%);
 }
 
 .blogpost pre code {

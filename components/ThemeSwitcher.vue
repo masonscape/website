@@ -1,44 +1,71 @@
 <template>
-  <button @click="handleClick" >
+  <button class="button" @click="handleClick" >
     <Icon name="material-symbols:palette-outline" class="theme-icon" />
   </button>
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '~/store/theme'
+import { useTheme, type Theme } from '~/store/theme'
 
 const currentTheme = useTheme()
-
-interface Theme {
-  name: string,
-  primary: string,
-  secondary: string,
-  dark: boolean
-}
 
 const themeList: Theme[] = [
   {
     name: 'dark',
     primary: '121212',
     secondary: 'ffffff',
+    accent: '0090ff',
     dark: true
   },
   {
     name: 'light',
     primary: 'ffffff',
     secondary: '000000',
+    accent: '0090ff',
     dark: false
   },
   {
     name: 'light-pink',
     primary: 'feb6ff',
     secondary: '510083',
+    accent: '900000',
     dark: false
   },
   {
     name: 'blue',
     primary: '244880',
     secondary: 'ffff00',
+    accent: '00bb00',
+    dark: true
+  }, {
+    name: 'evil',
+    primary: 'ff0000',
+    secondary: '000000',
+    accent: '000000',
+    dark: true
+  }, {
+    name: 'halloween',
+    primary: 'ff8c00',
+    secondary: 'c800ff',
+    accent: '000000',
+    dark: false
+  }, {
+    name: 'trans',
+    primary: '5BCEFA',
+    secondary: 'F5A9B8',
+    accent: 'ffffff',
+    dark: false
+  }, {
+    name: 'bisexual',
+    primary: '9B4F96',
+    secondary: '0038A8',
+    accent: 'D60270',
+    dark: true
+  }, {
+    name: 'france',
+    primary: '149954',
+    secondary: 'E4312b',
+    accent: '000000',
     dark: true
   }
 ]
@@ -66,6 +93,7 @@ const applyTheme = (theme: Theme) => {
   console.log(theme)
   document.documentElement.style.setProperty('--color-primary', '#' + theme.primary)
   document.documentElement.style.setProperty('--color-secondary', '#' + theme.secondary)
+  document.documentElement.style.setProperty('--color-accent', '#' + theme.accent)
   document.documentElement.setAttribute('is-special-theme', (theme.name !== 'dark' && theme.name !== 'light').toString())
 
   document.documentElement.classList.toggle('dark', theme.dark)
@@ -99,6 +127,24 @@ onMounted(() => {
 button {
   all: unset;
 }
+
+.button {
+  background-color: var(--color-primary-16);
+  color: var(--color-primary);
+  border: none;
+  cursor: pointer;
+  width: var(--button-size);
+  height: var(--button-size);
+
+  border-radius: var(--button-size);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: var(--button-margin);
+}
+
 
 .theme-icon {
   padding: 0px;

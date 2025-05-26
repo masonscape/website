@@ -1,5 +1,5 @@
 <template>
-  <a :href="href">
+  <a :href="href" class="button">
     <Icon :name="icon" class="button-icon" :target="target"/>
   </a>
 </template>
@@ -28,5 +28,22 @@ defineProps({
   width: 70%;
   height: 70%;
   background-color: var(--color-primary-2);
+}
+
+.button {
+  background-color: var(--color-primary-16);
+  color: var(--color-primary);
+  border: none;
+  cursor: pointer;
+  width: var(--button-size);
+  height: var(--button-size);
+
+  border-radius: var(--button-size);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: var(--button-margin);
 }
 </style>

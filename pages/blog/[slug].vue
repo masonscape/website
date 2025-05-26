@@ -10,5 +10,5 @@ onMounted(() => {
 </script>
 
 <template>
-  <PostContainer :post="post" />
+  <ContentBody :content="post" />
 </template>

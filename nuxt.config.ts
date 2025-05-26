@@ -29,6 +29,7 @@ export default defineNuxtConfig({
 
               document.documentElement.style.setProperty('--color-primary', '#' + initialTheme.primary)
               document.documentElement.style.setProperty('--color-secondary', '#' + initialTheme.secondary)
+              document.documentElement.style.setProperty('--color-accent', '#' + initialTheme.accent)
               document.documentElement.setAttribute('is-special-theme', (initialTheme.name !== 'dark' && initialTheme.name !== 'light').toString())
 
               document.documentElement.classList.toggle('dark', initialTheme.dark)
