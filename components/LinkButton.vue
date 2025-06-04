@@ -23,15 +23,14 @@ defineProps({
 
 <style scoped>
 .button-icon {
+  color: var(--color-secondary);
   padding: 0px;
   margin: 0px;
-  width: 70%;
-  height: 70%;
-  background-color: var(--color-primary-2);
+  width: 100%;
+  height: 100%;
 }
 
 .button {
-  background-color: var(--color-primary-16);
   color: var(--color-primary);
   border: none;
   cursor: pointer;

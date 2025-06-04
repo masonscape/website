@@ -129,14 +129,11 @@ button {
 }
 
 .button {
-  background-color: var(--color-primary-16);
   color: var(--color-primary);
   border: none;
   cursor: pointer;
   width: var(--button-size);
   height: var(--button-size);
-
-  border-radius: var(--button-size);
 
   display: flex;
   align-items: center;
@@ -149,7 +146,8 @@ button {
 .theme-icon {
   padding: 0px;
   margin: 0px;
-  width: 75%;
-  height: 75%;
+  width: 100%;
+  height: 100%;
+  color: var(--color-secondary)
 }
 </style>
