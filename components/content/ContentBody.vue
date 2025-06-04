@@ -47,8 +47,12 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.blogpost a:hover {
-  text-decoration: underline;
+html.dark .blogpost a:hover {
+  color: color-mix(in srgb, var(--color-accent) 50%, white 50%)
+}
+
+html.light .blogpost a:hover {
+  color: color-mix(in srgb, var(--color-accent) 50%, black 50%)
 }
 
 .blogpost ul,
