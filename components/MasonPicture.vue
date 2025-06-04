@@ -29,11 +29,27 @@ function generateColorScale(
   // Multipliers for each position
   const darkMultipliers = [4, 5, 4, 3, 0, 3, 2, 1, 2]
   const lightMultipliers = [-1, 0, -1, -2, -5, -2, -3, -4, -3]
-  const colorIsLight = baseR + baseG + baseB >= 384
+  const mediumMultipliers = [1, 2, 1, 0, -3, 0, -1, -2, -1]
+  const averageColor = (baseR + baseG + baseB) / 3
 
-  const multipliers = colorIsLight ? lightMultipliers : darkMultipliers
+  const getMultipliers = () => { 
+    if (averageColor <= 96) {
+      // if average color is dark, start the gradient at the middle and get lighter from there
+      return darkMultipliers
+    } else if (averageColor > 96 && averageColor <= 220) {
+      // if average color is medium, but one or more colors are very high, start from the top middle square and get darker
+      if (baseR === 255 || baseG === 255 || baseB === 255) {
+        return lightMultipliers
+      }
+      // if average color is medium, and no colors are extremely high, start from the left and right middle squares
+      return mediumMultipliers
+    } else {
+      // if average color is high, start from top middle square and get darker
+      return lightMultipliers
+    }
+  }
   
-  return multipliers.map(mult => {
+  return getMultipliers().map(mult => {
     // Apply increments as direct numeric additions (not hex arithmetic)
     const r = baseR + (increment.r * mult)
     const g = baseG + (increment.g * mult)
