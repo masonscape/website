@@ -73,6 +73,7 @@ onMounted(() => {
   align-items: center;
 
   padding-left: 1em;
+  padding-right: 1em;
   gap: 0.8rem;
 }
 
