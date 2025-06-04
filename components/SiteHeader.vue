@@ -31,6 +31,7 @@ onMounted(() => {
           <MasonPicture v-else class="picture" />
         </div>
       </div>
+      <p class="wordmark">masonscape</p>
     </a>
     <div class="button-list">
       <ThemeSwitcher class="button"/>
@@ -70,6 +71,15 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding-left: 1em;
+  gap: 0.8rem;
+}
+
+.wordmark {
+  font-size: 1.6em;
+  font-weight: 700;
+  color: var(--color-secondary);
 }
 
 .logo {
@@ -78,14 +88,13 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
 }
 
 .placeholder-logo {
   background: var(--color-secondary);
   border-radius: 50%;
-  width: 100%;
-  height: 100%;
+  width: 99%;
+  height: 99%;
   position: absolute;
 }
 
@@ -96,6 +105,9 @@ html[is-special-theme="false"] .placeholder-logo {
 .picture-wrapper {
   width: 60cqh;
   height: 60cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .picture {
