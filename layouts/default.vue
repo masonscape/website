@@ -26,7 +26,7 @@ a {
 }
 
 .default {
-  --header-height: 3.5em;
+  --header-height: 4em;
   --button-size: calc(var(--header-height) / 2);
   --button-margin: calc((var(--header-height) - var(--button-size)) / 2);
 
@@ -37,7 +37,9 @@ a {
   width: 100vw;
   min-height: 100vh;
   color: var(--color-secondary);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Helvetica, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.25em;
+
 
   align-items: center;
   justify-content: center;

@@ -50,6 +50,7 @@ const formattedModifiedDate = props.content.meta.modified && formatDate(props.co
   font-style: italic;
   font-size: 1.5em;
   margin-bottom: 2.5em;
+  line-height: 1.25em;
 }
 
 .date {
