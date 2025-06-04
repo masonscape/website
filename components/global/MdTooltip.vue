@@ -1,18 +1,31 @@
 <template>
   <span class="tooltip-wrapper">
-    <span 
-      v-if="parsedMarkdown" 
-      class="tooltip-content" 
-      :style="{
-        transform: `translate(-50%, -100%)`,
-        top: `${position.y - 5}px`, 
-        left: `${position.x}px`,
-        opacity: isVisible ? 1 : 0
-      }"
+      <span
+        v-if="parsedMarkdown"
+        class="tooltip-content"
+        :style="{
+          top: `${position.y - 10}px`,
+          left: `${position.x}px`,
+          opacity: isHovering ? 1 : 0,
+          pointerEvents: isHovering ? 'auto' : 'none'
+        }"
+        @mouseenter="tooltipEnter"
+        @mouseleave="tooltipLeave"
+      >
+        <div class="tooltip-hitbox" :style="{ pointerEvents: isHovering ? 'auto' : 'none' }"/>
+        <div 
+          class="tooltip-text-content" 
+             :style="{ 
+               userSelect: isMousingOverTooltip ? 'text' : 'none'
+             }">
+          <ContentRenderer :value="parsedMarkdown" />
+        </div>
+      </span>
+    <span
+      class="tooltipped-text"
+      @mouseenter="textEnter"
+      @mouseleave="textLeave"
     >
-      <ContentRenderer :value="parsedMarkdown" />
-    </span>
-    <span class="tooltipped-text" @mousemove="onMouseMove" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave">
       {{ text.replace(/<br>/g, '\n') }}
     </span>
   </span>
@@ -20,37 +33,73 @@
 
 <script setup lang="ts">
 import type { MDCParserResult } from '@nuxtjs/mdc'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 const props = defineProps<{ tooltip: string, text: string }>()
 
 const parsedMarkdown = ref<null | MDCParserResult>(null)
 const position = ref({ x: 0, y: 0 })
-const isVisible = ref(false)
+const isMousingOverTooltipText = ref(false)
+const isMousingOverTooltip = ref(false)
+const startedShowing = ref(false)
 
-const onMouseMove = (event: MouseEvent) => {
-  if (!isVisible.value) return
-  position.value = { 
-    x: event.clientX, 
-    y: event.clientY
+const isHovering = computed(() => {
+  return isMousingOverTooltip.value || isMousingOverTooltipText.value
+})
+
+let hideTimeout: ReturnType<typeof setTimeout> | null = null
+
+const clearHideTimeout = () => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout)
+    hideTimeout = null
   }
 }
 
-const onMouseEnter = (event: MouseEvent) => {
-  isVisible.value = true
-  position.value = { 
-    x: event.clientX, 
-    y: event.clientY
-  }
+const scheduleHide = () => {
+  clearHideTimeout()
+  hideTimeout = setTimeout(() => {
+    if (!isMousingOverTooltip.value && !isMousingOverTooltipText.value) {
+      startedShowing.value = false
+    }
+  }, 100)
 }
 
-const onMouseLeave = () => {
-  isVisible.value = false
+const textEnter = (event: MouseEvent) => {
+  if (event.buttons !== 0) return
+  
+  clearHideTimeout()
+  if (!startedShowing.value) {
+    startedShowing.value = true
+    const target = event.target as HTMLElement
+    const rect = target.getBoundingClientRect()
+    position.value = {
+      x: rect.left + rect.width / 2, // Center horizontally on the text
+      y: rect.top // Top of the text element
+    }
+  }
+  isMousingOverTooltipText.value = true
+}
+
+const textLeave = () => {
+  isMousingOverTooltipText.value = false
+  scheduleHide()
+}
+
+const tooltipEnter = () => {
+  if (!startedShowing.value) return
+  clearHideTimeout()
+  isMousingOverTooltip.value = true
+}
+
+const tooltipLeave = () => {
+  isMousingOverTooltip.value = false
+  scheduleHide()
 }
 
 onMounted(async () => {
   try {
-    parsedMarkdown.value = await parseMarkdown(props.tooltip.replace(/<br>/g, "\n"))
+    parsedMarkdown.value = await parseMarkdown(props.tooltip.replace(/<br>/g, '\n'))
   } catch (err) {
     console.error('Error parsing markdown:', err)
   }
@@ -63,27 +112,48 @@ onMounted(async () => {
   display: inline-block;
 }
 
+html.dark .tooltip-content {
+  background-color: color-mix(in srgb, white 10%, var(--color-primary) 90%);
+}
+
+html.light .tooltip-content {
+  background-color: color-mix(in srgb, black 10%, var(--color-primary) 90%);
+}
+
 .tooltip-content {
   position: fixed;
-  background-color: #333;
-  color: #fff;
-  padding: 6px 12px;
+  color: var(--color-secondary);
+  padding: 01px 16px;
   border-radius: 4px;
+  outline: 0.1em solid var(--color-secondary);
   white-space: pre-line;
   transition: opacity 0.15s ease-out, transform 0.1s ease-out;
   z-index: 1000;
-  pointer-events: none;
-  /* Center horizontally and position above cursor */
-  transform: translate(-50%, -100%) scale(50%);
-
   font-size: 16px;
   font-weight: normal;
   letter-spacing: normal;
   text-transform: none;
+  user-select: text;
+  transform: translate(-50%, -100%);
+}
+
+.tooltip-hitbox {
+  position: absolute;
+  top: -15px;
+  bottom: -15px;
+  left: -15px;
+  right: -15px;
+  z-index: -1; /* Behind the text content */
+  pointer-events: auto;
+}
+
+.tooltip-text-content {
+  position: relative;
+  z-index: 1; /* Above the hitbox */
+  /* pointer-events: auto; - removed, now controlled by inline style */
 }
 
 .tooltipped-text {
   cursor: pointer;
   text-decoration: underline dotted;
-}
-</style>
+}</style>
