@@ -12,3 +12,11 @@ for (let j of ['ahh', 'test']) {
 ```
 
 [:::sigma:::Balls.:::](./sigma)
+
+:::test1:::[test](./test):::
+
+inline testftt tttt ttttt ttt32t35 g353g34g3 g34gtt ttttttttt ttttttttt :::teh hh hhhhhhh hhhhhhhhh hhhhhh   hth h rh rth rthst2:::test2::: this is an inline test
+
+:::```ts
+  console.log('test');
+```:::This is a test:::

@@ -21,6 +21,7 @@ onMounted(() => {
 <style>
 .content {
   margin: 0;
+  margin-bottom: 3em;
   background-color: transparent;
   position: relative;
   width: min(44em, 90vw);
