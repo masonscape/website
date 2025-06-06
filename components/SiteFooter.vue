@@ -6,9 +6,12 @@
   <footer class="footer">
     <p class="copyright">© masonscape.dev</p>
     <div class="footer-links">
-      <a href="/privacy" class="footer-link">
-        <p>Privacy Policy</p>
-      </a>
+      <NuxtLink href="/privacy" class="footer-link">
+        <p>Privacy</p>
+      </NuxtLink>
+      <NuxtLink href="/contact" class="footer-link">
+        <p>Contact</p>
+      </NuxtLink>
     </div>
     <div class="button-list">
       <LinkButton class="button" icon="grommet-icons:github" href="https://github.com/mason8592/blog" target="_blank"/>
@@ -18,35 +21,71 @@
 
 <style scoped>
 .footer {
+  position: relative;
   display: flex;
   background-color: var(--color-primary-2);
   width: 100%;
-  height: var(--header-height);
+  height: clamp(var(--header-height), var(--header-height), fit-content);
   z-index: 1000;
   align-items: center;
 
-  border-top: 1px var(--color-tertiary) solid
+  border-top: 1px var(--color-tertiary) solid;
+
+  color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
 }
 
+
 .copyright {
-  margin-left: 1em;
-  color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
+  white-space: nowrap;
+  font-size: min(8vw, 1em);
+  margin-left: 2em;
 }
 
 .footer-links {
-  margin-left: 3em;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  font-size: min(8vw, 1em);
+  left: 50%;
+  transform: translate(-50%);
 }
 
 .footer-link {
+  --footer-link-gap: min(5vw, 1em);
   text-decoration: none;
-  color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
+  padding-left: var(--footer-link-gap);
+  padding-right: var(--footer-link-gap);
+  color: inherit;
 }
 
 .button-list {
   margin-left: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-
   display: flex;
+}
+
+.button {
+  width: min(var(--button-size), 16vw);
+  height: min(var(--button-size), 16vw);
+}
+
+@media (max-width: 600px) {
+  .footer {
+    flex-direction: column;
+  }
+
+  .copyright {
+    margin-left: 0
+  }
+
+  .footer-links {
+    position: static;
+    margin: auto;
+    transform: none;
+    left: 0;
+  }
+
+  .button-list {
+    margin-left: 0;
+  }
 }
 </style>

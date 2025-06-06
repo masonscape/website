@@ -36,13 +36,12 @@ defineProps({
   cursor: pointer;
   width: var(--button-size);
   height: var(--button-size);
+  padding: 1em;
 
   border-radius: var(--button-size);
 
   display: flex;
   align-items: center;
   justify-content: center;
-
-  margin-right: var(--button-margin);
 }
 </style>
