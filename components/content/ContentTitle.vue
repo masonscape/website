@@ -1,12 +1,12 @@
 <template>
   <header class="title">
     <h1 class="title-text">{{ content.title }}</h1>
-    <p class="description">{{ content.description }}</p>
-    <div v-if=content.meta.created class="date">
+    <p v-if="content.description" class="description">{{ content.description }}</p>
+    <div v-if="content.created" class="date">
       <span class="created">Created: </span>
       <time class="timestamp">{{ formattedCreatedDate }}</time>
     </div>
-    <div v-if=content.meta.modified class="date">
+    <div v-if="content.modified" class="date">
       <span class="created">Modified: </span>
       <time class="timestamp">{{ formattedModifiedDate }}</time>
     </div>
@@ -14,7 +14,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ content: { title: string, description: string, meta: { created: number, modified?: number } } }>()
+import type { BlogCollectionItem } from '@nuxt/content'
+
+const props = defineProps<{ content: BlogCollectionItem }>()
+
+console.log(props.content)
 
 function formatDate(timestamp: number): string {
   const date = new Date(timestamp)
@@ -30,26 +34,26 @@ function formatDate(timestamp: number): string {
   return `${day} ${month} ${year}, ${time}`;
 }
 
-const formattedCreatedDate = formatDate(props.content.meta.created)
-const formattedModifiedDate = props.content.meta.modified && formatDate(props.content.meta.modified)
+const formattedCreatedDate = formatDate(props.content.created)
+const formattedModifiedDate = props.content.modified && formatDate(props.content.modified)
 </script>
 
 <style scoped>
 .title {
-  margin-top: 3em;
-  margin-bottom: 5em;
+  margin-bottom: 3em;
   border-bottom: 1px var(--color-tertiary) solid
 }
 
 .title-text {
   margin: 0;
   font-size: 3em;
+  line-height: 1;
 }
 
 .description {
   font-style: italic;
   font-size: 1.5em;
-  margin-bottom: 2.5em;
+  margin-bottom: 2em;
   line-height: 1.25em;
 }
 
