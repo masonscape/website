@@ -7,7 +7,7 @@ const { data: post } = await useAsyncData(`blog-${slug}`, () => {
 const rotation = ref(0)
 
 onMounted(() => {
-  document.title = 'Page not found'
+  document.title = post ? post.value.title : 'Page not found'
 })
 
 const handleClick = () => {
