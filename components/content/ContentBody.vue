@@ -1,50 +1,51 @@
-<script setup>
-const props = defineProps({
-  content: {
-    type: Object,
-    required: true
-  }
-})
+<script setup lang="ts">
+import type { BlogCollectionItem, MinimalNode } from '@nuxt/content'
+
+const props = defineProps<{ content: BlogCollectionItem }>()
 
 onMounted(() => {
   document.title = props.content.title
 })
+
+// this bit is part of the tooltip system. if we try to set a tooltip in our markdown, directly after a word, with no space, it breaks. you need a space before a vue element, at least using the :ElementName syntax. so our tooltip processor adds garbage text (' REPLACE THIS SPACE ') before every tooltip, so that it renders properly.
+// that leaves us with garbage text and a properly rendered tooltip. this function strips away the garbage text, leaving us with only the tooltip
+const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
+  const newObject: BlogCollectionItem = {
+    ...content,
+    body: {
+      ...content.body,
+      value: content.body.value.map(value => {
+        if (Array.isArray(value)) {
+          return value.map(item => typeof item === 'string' ? item.replace(/ REPLACE THIS SPACE /g, '') : item)
+        }
+        return value
+      }) as MinimalNode[]
+    }
+  }
+
+  console.log(newObject)
+
+  return newObject
+}
 </script>
 
 <template>
   <section class="content">
     <ContentTitle :content="content" />
-    <ContentRenderer class="blogpost" :value="content" />
+    <ContentRenderer class="blogpost" :value="cleanContent(content)" />
   </section>
 </template>
 
 <style>
 .content {
   margin: 0;
-  margin-bottom: 3em;
   background-color: transparent;
   position: relative;
   width: min(44em, 90vw);
 }
 
-.blogpost h1,
-.blogpost h2,
-.blogpost h3,
-.blogpost h4,
-.blogpost h5,
-.blogpost h6 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.blogpost h1 {
-  margin-bottom: 1rem;
-}
-
-.blogpost p {
-  margin-bottom: 1rem;
+.blogpost {
+  line-height: 1.4em;
 }
 
 html.dark .blogpost a:hover {
@@ -91,19 +92,5 @@ html.dark .blogpost pre {
   display: block;
   white-space: pre-wrap; /* Allows wrapping */
   word-wrap: break-word; /* Breaks long words */
-}
-
-abbr {
-  position: relative;
-}
-
-abbr:hover::after {
-position: absolute;
-bottom: 100%;
-left: 100%;
-display: block;
-padding: 0em;
-background: black;
-content: attr(title);
 }
 </style>

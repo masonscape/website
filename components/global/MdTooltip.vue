@@ -1,26 +1,26 @@
 <template>
   <span class="tooltip-wrapper">
-      <span
-        v-if="parsedMarkdown"
-        class="tooltip-content"
-        :style="{
-          top: `${position.y - 10}px`,
-          left: `${position.x}px`,
-          opacity: isHovering ? 1 : 0,
-          pointerEvents: isHovering ? 'auto' : 'none'
-        }"
-        @mouseenter="tooltipEnter"
-        @mouseleave="tooltipLeave"
-      >
-        <div class="tooltip-hitbox" :style="{ pointerEvents: isHovering ? 'auto' : 'none' }"/>
-        <div 
-          class="tooltip-text-content" 
-             :style="{ 
-               userSelect: isMousingOverTooltip ? 'text' : 'none'
-             }">
-          <ContentRenderer :value="parsedMarkdown" />
-        </div>
-      </span>
+    <span
+      v-if="props.tooltip && parsedMarkdown"
+      class="tooltip-content"
+      :style="{
+        top: `${position.y - 10}px`,
+        left: `${position.x}px`,
+        opacity: isHovering ? 1 : 0,
+        pointerEvents: isHovering ? 'auto' : 'none'
+      }"
+      @mouseenter="tooltipEnter"
+      @mouseleave="tooltipLeave"
+    >
+      <div class="tooltip-hitbox" :style="{ pointerEvents: isHovering ? 'auto' : 'none' }"/>
+      <div 
+        class="tooltip-text-content" 
+            :style="{ 
+              userSelect: isMousingOverTooltip ? 'text' : 'none'
+            }">
+        <ContentRenderer :value="parsedMarkdown" />
+      </div>
+    </span>
     <span
       class="tooltipped-text"
       @mouseenter="textEnter"
@@ -122,19 +122,22 @@ html.light .tooltip-content {
 
 .tooltip-content {
   position: fixed;
+  transform: translate(-50%, -100%);
+  padding: 1em;
+  z-index: 1000;
+  max-width: min(20em, 80em);
+
   color: var(--color-secondary);
-  padding: 01px 16px;
   border-radius: 4px;
-  outline: 0.1em solid var(--color-secondary);
+  outline: 0.2em solid var(--color-accent);
+
   white-space: pre-line;
   transition: opacity 0.15s ease-out, transform 0.1s ease-out;
-  z-index: 1000;
   font-size: 16px;
   font-weight: normal;
   letter-spacing: normal;
   text-transform: none;
   user-select: text;
-  transform: translate(-50%, -100%);
 }
 
 .tooltip-hitbox {
@@ -143,14 +146,13 @@ html.light .tooltip-content {
   bottom: -15px;
   left: -15px;
   right: -15px;
-  z-index: -1; /* Behind the text content */
+  z-index: -1;
   pointer-events: auto;
 }
 
 .tooltip-text-content {
   position: relative;
-  z-index: 1; /* Above the hitbox */
-  /* pointer-events: auto; - removed, now controlled by inline style */
+  z-index: 1;
 }
 
 .tooltipped-text {
