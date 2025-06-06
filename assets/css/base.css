@@ -17,16 +17,6 @@
   --color-accent: var(--blue-4);
 }
 
-html.dark {
-  --color-primary: #121212;
-  --color-secondary: #ffffff;
-}
-
-html.light {
-  --color-primary: #ffffff;
-  --color-secondary: #000000;
-}
-
 body, html {
   margin: 0;
   background-color: var(--color-primary)
