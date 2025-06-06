@@ -2,10 +2,11 @@
   <span class="tooltip-wrapper">
     <span
       v-if="props.tooltip && parsedMarkdown"
+      ref="tooltipContentRef"
       class="tooltip-content"
       :style="{
         top: `${position.y - 10}px`,
-        left: `${position.x}px`,
+        left: `${adjustedX}px`,
         opacity: isHovering ? 1 : 0,
         pointerEvents: isHovering ? 'auto' : 'none'
       }"
@@ -15,13 +16,12 @@
       <div class="tooltip-hitbox" :style="{ pointerEvents: isHovering ? 'auto' : 'none' }"/>
       <div 
         class="tooltip-text-content" 
-            :style="{ 
-              userSelect: isMousingOverTooltip ? 'text' : 'none'
-            }">
+        :style="{ userSelect: isMousingOverTooltip ? 'text' : 'none' }">
         <ContentRenderer :value="parsedMarkdown" />
       </div>
     </span>
     <span
+      ref="tooltippedTextRef"
       class="tooltipped-text"
       @mouseenter="textEnter"
       @mouseleave="textLeave"
@@ -33,68 +33,71 @@
 
 <script setup lang="ts">
 import type { MDCParserResult } from '@nuxtjs/mdc'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue'
 
 const props = defineProps<{ tooltip: string, text: string }>()
 
 const parsedMarkdown = ref<null | MDCParserResult>(null)
 const position = ref({ x: 0, y: 0 })
+const adjustedX = ref(0)
 const isMousingOverTooltipText = ref(false)
 const isMousingOverTooltip = ref(false)
-const startedShowing = ref(false)
 
-const isHovering = computed(() => {
-  return isMousingOverTooltip.value || isMousingOverTooltipText.value
-})
+const tooltipContentRef = ref<HTMLElement | null>(null)
+const tooltippedTextRef = ref<HTMLElement | null>(null)
 
-let hideTimeout: ReturnType<typeof setTimeout> | null = null
+const isHovering = computed(() => isMousingOverTooltip.value || isMousingOverTooltipText.value)
 
-const clearHideTimeout = () => {
-  if (hideTimeout) {
-    clearTimeout(hideTimeout)
-    hideTimeout = null
-  }
-}
-
-const scheduleHide = () => {
-  clearHideTimeout()
-  hideTimeout = setTimeout(() => {
-    if (!isMousingOverTooltip.value && !isMousingOverTooltipText.value) {
-      startedShowing.value = false
+const adjustTooltipPosition = () => {
+  nextTick(() => {
+    const tooltipEl = tooltipContentRef.value
+    const triggerEl = tooltippedTextRef.value
+    if (!tooltipEl || !triggerEl) {
+      adjustedX.value = position.value.x
+      return
     }
-  }, 100)
+    const tooltipRect = tooltipEl.getBoundingClientRect()
+    const triggerRect = triggerEl.getBoundingClientRect()
+    const viewportWidth = window.innerWidth
+
+    // Center tooltip horizontally on the trigger
+    let left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2
+
+    // Prevent overflow left
+    if (left < 8) left = 8
+
+    // Prevent overflow right
+    if (left + tooltipRect.width > viewportWidth - 8) {
+      left = viewportWidth - tooltipRect.width - 8
+    }
+
+    adjustedX.value = left
+  })
 }
 
 const textEnter = (event: MouseEvent) => {
   if (event.buttons !== 0) return
-  
-  clearHideTimeout()
-  if (!startedShowing.value) {
-    startedShowing.value = true
-    const target = event.target as HTMLElement
-    const rect = target.getBoundingClientRect()
-    position.value = {
-      x: rect.left + rect.width / 2, // Center horizontally on the text
-      y: rect.top // Top of the text element
-    }
+
+  const target = event.target as HTMLElement
+  const rect = target.getBoundingClientRect()
+  position.value = {
+    x: rect.left + rect.width / 2,
+    y: rect.top
   }
+  nextTick(adjustTooltipPosition)
   isMousingOverTooltipText.value = true
 }
 
 const textLeave = () => {
   isMousingOverTooltipText.value = false
-  scheduleHide()
 }
 
 const tooltipEnter = () => {
-  if (!startedShowing.value) return
-  clearHideTimeout()
   isMousingOverTooltip.value = true
 }
 
 const tooltipLeave = () => {
   isMousingOverTooltip.value = false
-  scheduleHide()
 }
 
 onMounted(async () => {
@@ -103,6 +106,11 @@ onMounted(async () => {
   } catch (err) {
     console.error('Error parsing markdown:', err)
   }
+  window.addEventListener('resize', adjustTooltipPosition)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', adjustTooltipPosition)
 })
 </script>
 
@@ -122,10 +130,9 @@ html.light .tooltip-content {
 
 .tooltip-content {
   position: fixed;
-  transform: translate(-50%, -100%);
-  padding: 1em;
+  transform: translateY(-100%);
   z-index: 1000;
-  max-width: min(20em, 80em);
+  max-width: min(20em, 60vw);
 
   color: var(--color-secondary);
   border-radius: 4px;
@@ -153,6 +160,8 @@ html.light .tooltip-content {
 .tooltip-text-content {
   position: relative;
   z-index: 1;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 .tooltipped-text {
