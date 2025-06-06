@@ -25,7 +25,23 @@ export default defineNuxtConfig({
           innerHTML: `
             (function() {
               const savedTheme = localStorage.getItem('theme')
-              const initialTheme = savedTheme ? JSON.parse(savedTheme) : document.documentElement.classList.contains('dark') ? themeList[0] : themeList[1]
+              const themeList = [
+                {
+                  name: 'dark',
+                  primary: '121212',
+                  secondary: 'ffffff',
+                  accent: '0090ff',
+                  dark: true
+                },
+                {
+                  name: 'light',
+                  primary: 'ffffff',
+                  secondary: '000000',
+                  accent: '0090ff',
+                  dark: false
+                }
+              ]
+              const initialTheme = savedTheme ? JSON.parse(savedTheme) : window.matchMedia('(prefers-color-scheme: dark)').matches ? themeList[0] : themeList[1]
 
               document.documentElement.style.setProperty('--color-primary', '#' + initialTheme.primary)
               document.documentElement.style.setProperty('--color-secondary', '#' + initialTheme.secondary)
