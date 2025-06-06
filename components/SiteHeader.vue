@@ -23,7 +23,7 @@ onMounted(() => {
 
 <template>
   <header class="header">
-    <a class="logolink" href="/">
+    <NuxtLink class="logolink" href="/">
       <div class="logo">
         <div class="picture-wrapper">
           <div class="placeholder-logo"/>
@@ -32,7 +32,12 @@ onMounted(() => {
         </div>
       </div>
       <p class="wordmark">masonscape</p>
-    </a>
+    </NuxtLink>
+    <div class="header-links">
+      <NuxtLink class="header-link" href="/blog">
+        Blog
+      </NuxtLink>
+    </div>
     <div class="button-list">
       <ThemeSwitcher class="button"/>
     </div>
@@ -42,6 +47,7 @@ onMounted(() => {
 <style scoped>
 .header {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   container-type: size;
@@ -62,18 +68,27 @@ onMounted(() => {
   display: flex;
 }
 
+.header-links {
+  position: absolute;
+}
+
+.header-link {
+  color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
+  padding: 1em;
+  text-decoration: none;
+}
+
 .logolink {
   text-decoration: none;
   color: var(--color-secondary);
   height: var(--header-height);
-  min-width: var(--header-height);
   max-width: fit-content;
   display: flex;
-  justify-content: center;
   align-items: center;
 
   padding-left: 1em;
   padding-right: 1em;
+
   gap: 0.8rem;
 }
 
@@ -118,8 +133,8 @@ html[is-special-theme="false"] .placeholder-logo {
 }
 
 
-@media (max-width: 20em) {
-  .masonscape {
+@media (max-width: 600px) {
+  .wordmark {
     display: none
   }
 }
