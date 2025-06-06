@@ -19,6 +19,8 @@ body {
 
 main {
   flex: 1;
+  margin-top: 3em;
+  margin-bottom: 3em;
 }
 
 a {
@@ -28,7 +30,6 @@ a {
 .default {
   --header-height: 4em;
   --button-size: calc(var(--header-height) / 2);
-  --button-margin: calc((var(--header-height) - var(--button-size)) / 2);
 
   font-size: 16px;
 
@@ -38,11 +39,11 @@ a {
   min-height: 100vh;
   color: var(--color-secondary);
   font-family: Helvetica, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.25em;
-
 
   align-items: center;
   justify-content: center;
   position: relative;
+
+  overflow-x: hidden;
 }
 </style>
