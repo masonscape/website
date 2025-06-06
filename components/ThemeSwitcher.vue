@@ -135,11 +135,12 @@ button {
   width: var(--button-size);
   height: var(--button-size);
 
+  padding: 1em;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-right: var(--button-margin);
 }
 
 
