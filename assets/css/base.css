@@ -27,16 +27,6 @@ html.light {
   --color-secondary: #000000;
 }
 
-html.light-pink {
-  --color-primary: #feb6ff;
-  --color-secondary: #510083;
-}
-
-html.black {
-  --color-primary: #000000;
-  --color-secondary: #ffffff;
-}
-
 body, html {
   margin: 0;
   background-color: var(--color-primary)
