@@ -23,8 +23,6 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
     }
   }
 
-  console.log(newObject)
-
   return newObject
 }
 </script>
@@ -48,6 +46,35 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
   line-height: 1.4em;
 }
 
+.blogpost h1::before,
+.blogpost h2::before,
+.blogpost h3::before,
+.blogpost h4::before,
+.blogpost h5::before,
+.blogpost h6::before {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  background-color: var(--color-accent);
+  height: 100%;
+  width: 0.2em;
+  margin-right: 0.6em;
+
+  transform: translate(-1em, -20%)
+}
+
+.blogpost h1,
+.blogpost h2,
+.blogpost h3,
+.blogpost h4,
+.blogpost h5,
+.blogpost h6 {
+  padding-top: 0.5em;
+  margin-left: 1em;
+  position: relative;
+  font-style: italic;
+}
+
 html.dark .blogpost a:hover {
   color: color-mix(in srgb, var(--color-accent) 50%, white 50%)
 }
@@ -56,26 +83,24 @@ html.light .blogpost a:hover {
   color: color-mix(in srgb, var(--color-accent) 50%, black 50%)
 }
 
-.blogpost ul,
-.blogpost ol {
-  margin-bottom: 1rem;
-  padding-left: 1.5rem;
-}
-
 .blogpost blockquote {
   margin: 1.5rem 0;
+  height: fit-content;
   padding: 1rem;
-  background-color: #1e1e1e;
-  border-left: 4px solid #66bbff;
+  background-color: var(--color-primary-2);
+  border-left: 0.2em solid var(--color-accent);
   font-style: italic;
-  color: #999999;
+}
+
+.blogpost blockquote * {
+  margin: 0;
 }
 
 .blogpost pre {
   padding: 1.2rem;
-  border-radius: 8px;
+  border-radius: 1em;
   overflow-x: auto;
-  font-size: 0.8em;
+  font-size: 0.9em;
   max-width: fit-content;
   box-sizing: border-box;
 }

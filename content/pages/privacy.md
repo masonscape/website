@@ -1,6 +1,6 @@
 ---
 title: Privacy Policy
-description: Privacy policy for masonscape.dev
+description: Privacy policy for masonscape.com
 created: 1747788022796
 modified: 1747788022796
 ---
@@ -16,4 +16,4 @@ User preferences will be stored locally so that they may persist between session
 
 This privacy policy is effective as of the "Modified" date shown above.
 
-If you have questions about how this website handles your data, please send them to: [contact@masonscape.dev](mailto:contact@masonscape.dev)
+If you have questions about how this website handles your data, please send them to: [contact@masonscape.com](mailto:contact@masonscape.com)

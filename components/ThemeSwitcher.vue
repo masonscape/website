@@ -90,7 +90,6 @@ const getNextTheme = (currentTheme: Theme): Theme => {
 }
 
 const applyTheme = (theme: Theme) => {
-  console.log(theme)
   document.documentElement.style.setProperty('--color-primary', '#' + theme.primary)
   document.documentElement.style.setProperty('--color-secondary', '#' + theme.secondary)
   document.documentElement.style.setProperty('--color-accent', '#' + theme.accent)

@@ -18,8 +18,6 @@ import type { BlogCollectionItem } from '@nuxt/content'
 
 const props = defineProps<{ content: BlogCollectionItem }>()
 
-console.log(props.content)
-
 function formatDate(timestamp: number): string {
   const date = new Date(timestamp)
   const day = date.getDate()

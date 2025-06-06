@@ -76,7 +76,6 @@ const watchCSSVariable = (variableName: string, callback: (value: string) => voi
 }
 
 const draw = () => {
-  console.log('drawing', canvasRef.value, secondaryColor.value)
   if (!canvasRef.value || !secondaryColor.value) return
   const ctx = canvasRef.value.getContext('2d')!
 
