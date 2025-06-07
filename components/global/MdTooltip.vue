@@ -75,6 +75,11 @@ const adjustTooltipPosition = () => {
   })
 }
 
+const handleScroll = () => {
+  isMousingOverTooltipText.value = false
+  isMousingOverTooltip.value = false
+}
+
 const textEnter = (event: MouseEvent) => {
   if (event.buttons !== 0) return
 
@@ -107,10 +112,12 @@ onMounted(async () => {
     console.error('Error parsing markdown:', err)
   }
   window.addEventListener('resize', adjustTooltipPosition)
+  document.addEventListener('scroll', handleScroll)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', adjustTooltipPosition)
+  document.removeEventListener('scroll', handleScroll)
 })
 </script>
 
