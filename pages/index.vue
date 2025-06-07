@@ -11,32 +11,27 @@ onMounted(() => {
       <h1>Welcome to the masonscape!</h1>
       <img src="public/MasonCircle.svg" class="image">
     </div>
+    <NuxtLink to="/blog" class="bloglink">Click here to visit the blog!</NuxtLink>
     <hr>
-    <a href="https://vuejs.org/" target="blank">
-      <div class="image-text-group">
-        <img src="https://github.com/vuejs/art/blob/master/logo.png?raw=true" class="image"> 
-        <h2>This is my website, built using <span>Vue</span></h2>
-        <img src="https://github.com/vuejs/art/blob/master/logo.png?raw=true" class="image"> 
-      </div>
-    </a>
+    
+    <div class="image-text-group">
+      <img src="public/Vue.svg" class="image"> 
+      <h2>This is my website, built using <a href="https://vuejs.org/" target="blank">Vue</a></h2>
+      <img src="public/Vue.svg" class="image"> 
+    </div>
+  
+    <div class="image-text-group">
+      <img src="public/NuxtGreen.svg" class="image">
+      <h2>(or more specifically, <a href="https://nuxt.com/" target="blank">Nuxt</a>)</h2>
+      <img src="public/NuxtGreen.svg" class="image">
+    </div>
 
-    <a href="https://nuxt.com/" target="blank">
-      <div class="image-text-group">
-        <img src="https://nuxt.com/assets/design-kit/icon-green.svg" class="image">
-        <h2>(or more specifically, <span>Nuxt</span>)</h2>
-        <img src="https://nuxt.com/assets/design-kit/icon-green.svg" class="image">
-      </div>
-    </a>
-
-    <a href="https://content.nuxt.com/" target="blank">
-      <div class="image-text-group">
-        <img src="https://nuxt.com/assets/design-kit/icon-white.svg" class="image">
-        <h2>(or more specificallyer, <span>Nuxt Content</span>)</h2>
-        <img src="https://nuxt.com/assets/design-kit/icon-white.svg" class="image">
-      </div>
-    </a>
+    <div class="image-text-group">
+      <img src="public/NuxtWhite.svg" class="image">
+      <h2>(or more specificallyer, <a href="https://content.nuxt.com/" target="blank">Nuxt Content</a>)</h2>
+      <img src="public/NuxtWhite.svg" class="image">
+    </div>
     <hr>
-    <h3>For now it's just a <NuxtLink to="/blog">blog</NuxtLink>, but expect to see more stuff here in the future!</h3>
   </div>
 </template>
 
@@ -50,10 +45,19 @@ onMounted(() => {
   color: var(--color-secondary)
 }
 
-.main-page > a {
-  color: inherit;
+.bloglink {
+  font-size: 1.5em;
+  padding: 1em;
+  margin-bottom: 1em;
+  background-color: var(--color-accent);
+  border-radius: 2em;
   text-decoration: none;
-  margin: 1em;
+  color: var(--color-secondary);
+}
+
+.bloglink:hover {
+  background-color: color-mix(in srgb, var(--color-accent) 80%, var(--color-primary) 20%);
+  transform: scale(110%);
 }
 
 h1 {
@@ -77,7 +81,7 @@ span {
 hr {
   width: 80vw;
   margin: 1em;
-  color: var(--color-accent)
+  color: var(--color-primary-2)
 }
 
 .image-text-group {
@@ -86,6 +90,7 @@ hr {
   align-content: center;
   width: fit-content;
   color: var(--color-secondary);
+  margin: 1em;
 }
 
 .image {

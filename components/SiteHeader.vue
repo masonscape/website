@@ -70,10 +70,11 @@ onMounted(() => {
 
 .header-links {
   position: absolute;
+  font-size: 1.1em;
 }
 
 .header-link {
-  color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
+  color: var(--color-secondary) 70%;
   padding: 1em;
   text-decoration: none;
 }

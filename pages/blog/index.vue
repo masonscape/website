@@ -13,8 +13,14 @@ const formatTimestamp = (timestamp: number) => {
   }).format(new Date(timestamp))
 }
 
-onMounted(() => {
-  document.title = 'Blog Posts'
+useHead({
+  title: 'blog posts',
+  meta: [
+    { name: 'description', content: 'the official blog of the masonscape' },
+    { property: 'og:title', content: 'blog posts' },
+    { property: 'og:description', content: 'the official blog of the masonscape' },
+    { property: 'og:url', content: `https://masonscape.com/${useRoute().path}` },
+  ]
 })
 </script>
 
@@ -29,8 +35,8 @@ onMounted(() => {
           <h2 class="title">
             {{ post.title }}
           </h2>
-          <p v-if="post.created" class="timestamp">
-            {{ formatTimestamp(post.created) }}
+          <p v-if="post.published" class="timestamp">
+            {{ formatTimestamp(post.published) }}
           </p>
           <p class="description">{{ post.description }}</p>
         </NuxtLink>

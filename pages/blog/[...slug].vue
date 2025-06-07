@@ -4,6 +4,21 @@ const { data: post } = await useAsyncData(`blog-${slug}`, () => {
   return queryCollection('blog').path(`/blog/${slug}`).first()
 })
 
+useHead({
+  title: post.value.title,
+  meta: [
+    { name: 'description', content: post.value.description },
+    { property: 'og:title', content: post.value.title },
+    { property: 'og:description', content: post.value.description },
+    { property: 'og:url', content: `https://masonscape.com/${useRoute().path}` },
+    { name: 'theme-color', content: '#0090ff' }
+  ]
+})
+
+useSeoMeta({
+  ogImage: './_nuxt/public/MasonCircle.png',
+  twitterImage: './_nuxt/public/MasonCircle.png'
+})
 const rotation = ref(0)
 
 onMounted(() => {

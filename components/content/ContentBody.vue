@@ -75,14 +75,6 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
   font-style: italic;
 }
 
-html.dark .blogpost a:hover {
-  color: color-mix(in srgb, var(--color-accent) 50%, white 50%)
-}
-
-html.light .blogpost a:hover {
-  color: color-mix(in srgb, var(--color-accent) 50%, black 50%)
-}
-
 .blogpost blockquote {
   margin: 1.5rem 0;
   height: fit-content;

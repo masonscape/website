@@ -17,6 +17,17 @@
   --color-accent: var(--blue-4);
 }
 
+html.dark {
+  --themecolor: #000000;
+  --themecolor-inverted: #ffffff;
+}
+
+html.light {
+  --themecolor: #ffffff;
+  --themecolor-inverted: #000000;
+}
+
+
 body, html {
   margin: 0;
   background-color: var(--color-primary)
