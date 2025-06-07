@@ -34,7 +34,7 @@ a {
 }
 
 a:visited {
-  color: color-mix(in srgb, var(--color-accent) 50%, black 50%)
+  color: color-mix(in srgb, var(--color-accent) 60%, black 40%)
 }
 
 a:hover {

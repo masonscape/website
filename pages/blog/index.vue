@@ -17,7 +17,7 @@ useHead({
   title: 'blog posts',
   meta: [
     { name: 'description', content: 'the official blog of the masonscape' },
-    { property: 'og:title', content: 'blog posts' },
+    { property: 'og:title', content: 'blog' },
     { property: 'og:description', content: 'the official blog of the masonscape' },
     { property: 'og:url', content: `https://masonscape.com/${useRoute().path}` },
   ]
