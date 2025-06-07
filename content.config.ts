@@ -6,7 +6,7 @@ export default defineContentConfig({
       type: 'page',
       source: 'blog/*.md',
       schema: z.object({
-        created: z.number(),
+        published: z.number(),
         modified: z.number()
       })
     }),

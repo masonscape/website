@@ -1,7 +1,7 @@
 ---
 title: first post!
 description: discussing the new website, and plans going forward
-created: 1749198130658
+published: 1749198130658
 ---
 
 wow! first post! i dont know if i should type in proper grammar so im just gonna go ahead and not, at least for now. maybe proper grammar is reserved only for certain kinds of posts? like, educational type writeups? and casual posts can be written casually? works for me i guess!

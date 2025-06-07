@@ -2,12 +2,12 @@
   <header class="title">
     <h1 class="title-text">{{ content.title }}</h1>
     <p v-if="content.description" class="description">{{ content.description }}</p>
-    <div v-if="content.created" class="date">
-      <span class="created">Created: </span>
+    <div v-if="content.published" class="date">
+      <span class="published">Published: </span>
       <time class="timestamp">{{ formattedCreatedDate }}</time>
     </div>
     <div v-if="content.modified" class="date">
-      <span class="created">Modified: </span>
+      <span class="published">Modified: </span>
       <time class="timestamp">{{ formattedModifiedDate }}</time>
     </div>
   </header>
@@ -32,7 +32,7 @@ function formatDate(timestamp: number): string {
   return `${day} ${month} ${year}, ${time}`;
 }
 
-const formattedCreatedDate = formatDate(props.content.created)
+const formattedCreatedDate = formatDate(props.content.published)
 const formattedModifiedDate = props.content.modified && formatDate(props.content.modified)
 </script>
 
@@ -59,7 +59,7 @@ const formattedModifiedDate = props.content.modified && formatDate(props.content
   margin-bottom: 1em;
 }
 
-.created {
+.published {
   color: color-mix(in srgb, var(--color-secondary) 50%, var(--color-primary) 50%);
 }
 </style>

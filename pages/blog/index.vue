@@ -1,8 +1,7 @@
 <script setup lang="ts">
-// removed await to fix navigating back to this page causing a warning in console about no matches found for route ./test
-const { data: posts } = useAsyncData('blog-posts', () => 
+const { data: posts } = await useAsyncData('blog-posts', () => 
   queryCollection('blog')
-    .order('created', 'DESC')
+    .order('published', 'DESC')
     .all()
 )
 
