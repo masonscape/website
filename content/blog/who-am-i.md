@@ -1,7 +1,7 @@
 ---
 title: who am i?
 description: get to know the mason behind the scape
-published: 1749287246314
+published: 1749322324082
 ---
 
 hi! i am the guy who made this website. in this post ill talk a little about who i am as a person, and then a bit about who i am as a developer
