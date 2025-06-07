@@ -1,4 +1,4 @@
-import processTooltipSyntax from './content-plugins/tooltip'
+import { processTooltipSyntax }  from './content-plugins/tooltip'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -8,6 +8,12 @@ export default defineNuxtConfig({
   devServer: {
     host: '0.0.0.0',
     port: 3000
+  },
+
+  nitro: {
+    prerender: {
+      routes: ['/blog']
+    }
   },
 
   hooks: {
