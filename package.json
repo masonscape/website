@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "masonscape",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,7 +7,10 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "docker-build": "docker build --network=host -t masonscape .",
+    "docker-start": "docker run -p 3000:3000 masonscape",
+    "docker-save": "docker save -o masonscape.tar masonscape"
   },
   "dependencies": {
     "@nuxt/content": "3.5.1",
