@@ -108,8 +108,8 @@ const tooltipLeave = () => {
 onMounted(async () => {
   try {
     parsedMarkdown.value = await parseMarkdown(props.tooltip.replace(/<br>/g, '\n'))
-  } catch (err) {
-    console.error('Error parsing markdown:', err)
+  } catch {
+    console.error('Error parsing markdown')
   }
   window.addEventListener('resize', adjustTooltipPosition)
   document.addEventListener('scroll', handleScroll)

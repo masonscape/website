@@ -9,21 +9,32 @@ onMounted(() => {
 
 // this bit is part of the tooltip system. if we try to set a tooltip in our markdown, directly after a word, with no space, it breaks. you need a space before a vue element, at least using the :ElementName syntax. so our tooltip processor adds garbage text (' REPLACE THIS SPACE ') before every tooltip, so that it renders properly.
 // that leaves us with garbage text and a properly rendered tooltip. this function strips away the garbage text, leaving us with only the tooltip
+const cleanStringsDeep = (node: unknown): unknown => {
+  if (typeof node === 'string') {
+    return node.replace(/ ?YOU SHOULDNT BE SEEING THIS TEXT PLEASE REPORT IT ?/g, '')
+  }
+  if (Array.isArray(node)) {
+    return node.map(cleanStringsDeep)
+  }
+  if (node && typeof node === 'object') {
+    // Recursively clean all properties of the object
+    const newObj: Record<string, unknown> = {}
+    for (const key in node) {
+      newObj[key] = cleanStringsDeep((node as Record<string, unknown>)[key])
+    }
+    return newObj
+  }
+  return node
+}
+
 const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
-  const newObject: BlogCollectionItem = {
+  return {
     ...content,
     body: {
       ...content.body,
-      value: content.body.value.map(value => {
-        if (Array.isArray(value)) {
-          return value.map(item => typeof item === 'string' ? item.replace(/ REPLACE THIS SPACE /g, '') : item)
-        }
-        return value
-      }) as MinimalNode[]
+      value: cleanStringsDeep(content.body.value) as MinimalNode[]
     }
   }
-
-  return newObject
 }
 </script>
 
@@ -69,7 +80,9 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
 .blogpost h4,
 .blogpost h5,
 .blogpost h6 {
-  padding-top: 0.5em;
+  padding: 0.4em;
+  margin-top: 1.2em;
+  margin-bottom: 1.2em;
   margin-left: 1em;
   position: relative;
   font-style: italic;
@@ -98,7 +111,7 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
 }
 
 html.light .blogpost pre {
-  background-color: color-mix(in srgb, var(--color-primary) 70%, #ffffff 30%);
+  background-color: color-mix(in srgb, var(--color-primary) 30%, #ffffff 70%);
 }
 
 html.dark .blogpost pre {
@@ -109,5 +122,9 @@ html.dark .blogpost pre {
   display: block;
   white-space: pre-wrap; /* Allows wrapping */
   word-wrap: break-word; /* Breaks long words */
+}
+
+hr {
+  margin: 3em 0 3em 0;
 }
 </style>
