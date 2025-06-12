@@ -2,6 +2,7 @@
 title: who am i?
 description: get to know the mason behind the scape
 published: 1749322324082
+modified: 1749324624011
 ---
 
 hi! i am the guy who made this website. in this post ill talk a little about who i am as a person, and then a bit about who i am as a developer
@@ -16,7 +17,7 @@ i have some cats
 
 and some dogs
 
-:ContentImage{ src="puppies.png" alt="thats duke on the right and dilla on the left. i swear they dont usually look this scary" }
+:ContentImage{ src="puppies.png" alt="thats duke on the left and dilla on the right. i swear they dont usually look this scary" }
 
 they're all pretty young, except skye the cat (not pictured) who is 12. but duke and dilla are only like 4, and the kitties are like... 2?
 
@@ -132,19 +133,27 @@ and good news: masonbot is back! he has been for a number of months, actually. h
 
 this is where ive been for, idk, a couple years? after my server disbanded and masonbot went with it, i didnt code much for a while. but after a while, i dont remember what started it, i realized that my knowledge of javascript from my masonbot days meant that i could get into web development :::relatively easily:::css still kicked my ass more than javascript ever did:::
 
+#### the beginnings
+
 to be honest i dont remember my beginning web dev days much. i started with html css and javascript, but i didnt make that much with them really. i made my own website which was only like 3 super basic pages. i didnt really care much for it, i didnt have the same drive that i had when i was making discord bots. websites just didnt capture me the same way
 
 some time later, i made a website for a friends website. it was a website where you could draw on an html canvas with inside joke images. i still need to port it over to a modern website... but that was the first website i ever made with any sort of complexity. i remember really struggling to get it online, i had problems with CORS i think
 
-side note, but speaking of troubles, around that time is when i was trying to host with google cloud. i really hated it. im sure i will have to learn AWS or google cloud or something else eventually, and it probably wont be too bad now that im generally more experienced. but back then it seemed unbelievably overkill (because, for a small website, it was). eventually i switched to digitalocean and ive stuck with them since, i really love them in comparison. i find the developer experience of just having a linux container so much simpler. its *just* linux. and their tutorials are top notch. i :::first learned how to use linux:::i mean, i had experimented with ubuntu in a virtual machine, but never for more than a few minutes at a time. if you dont have any problem to solve and are just messing around, its hard to really learn, at least for me::: on a digitalocean droplet, getting one of my earlier websites hosted
+side note, but speaking of troubles, around that time is when i was trying to host with google cloud. i really hated it. im sure i will have to learn AWS or google cloud or something else eventually, and it probably wont be too bad now that im generally more experienced. but back then it seemed unbelievably overkill (because, for a small website, it was). eventually i switched to digitalocean and ive stuck with them since, i really love them in comparison. i find the developer experience of just having a linux container so much simpler. its *just* linux. and their tutorials are top notch. i :::first learned how to use linux:::i mean, i had experimented with ubuntu in a virtual machine, but never for more than a few minutes at a time. if you dont have any problem to solve and are just messing around, its hard to really learn, at least for me::: on a digitalocean droplet, getting one of my earlier websites hosted. in fact, i think that website was my first react website. 
 
-in fact, i think that website was my first react website. apparently, after making 1/3rd of a website using html, css, and js, i figured i was ready to move on to a framework. and react was the most popular one, so thats what i went with. this react app was also incredibly basic, and it was online for about 2 years, up until i replaced it with masonscape. it was just the sample create-react-app home page with a couple lines of text changed, although i did also have a tictactoe page (with websocket-based multiplayer) on that website. but thats about it. and then i just let it sit for years because i really was not interested in react
+#### the reactening
+
+apparently, after making 1/3rd of a website using html, css, and js, i figured i was ready to move on to a framework. and react was the most popular one, so thats what i went with. this react app was also incredibly basic, and it was online for about 2 years, up until i replaced it with masonscape. it was just the sample create-react-app home page with a couple lines of text changed, although i did also have a tictactoe page (with websocket-based multiplayer) on that website. but thats about it. and then i just let it sit for years because i really was not interested in react
 
 i DID still experiment with react over the past couple years privately. random projects that i would leave half-finished and never show anybody. i cant even remember most of them, honestly. i had a react rewrite of the previously mentioned html canvas drawing page about 80% finished, then i gave up on it. i tested out rendering user-controlled shapes in html canvas, planning to maybe turn it into some kind of game, but i also gave up on that. for the past couple years, most of the programming ive done has been abandoned early on
+
+#### home server
 
 that is, until i built my home server earlier this year. that gave me problems to solve, and i solved some of them with code. my automated backups are currently handled by a script i wrote in typescript that automatically runs rsync. i think ill do a writeup about that eventually. the home server is also the catalyst for bringing back masonbot, for showing server status within discord. i also self-host my own custom new tab page on my home server. i call it the mason panel. i originally planned for it to have more functionality, but right now its just a bunch of quick links. but i think theres still a good chance that i update it to have more functionality in the future
 
 anyway, the home server did get me to come back to programming a bit, though nothing really public facing (besides the discord bot, if that counts) and not much frontend work (the new tab page was pretty simple). i wasnt really a web dev, just a guy who knew typescript and could throw together a simple website if necessary
+
+#### vue saves the day
 
 but then i decided to give vue a try. i had heard so many people praise its developer experience compared to react. and recently, i had started to think that maybe the reason why i didnt like making websites was just because i didnt like react. so i decided to give it a shot! 
 
@@ -156,6 +165,8 @@ i still havent gotten too far into the advanced features of vue, like going deep
 
 i still have plenty of learning to do, but im *excited* to learn now. i feel reborn! 
 
+#### making this blog with nuxt
+
 pretty soon after starting with vue, i decided to set out and make a blog. i had the idea of writing markdown posts and having the website automatically read those files and turn them into webpages. and then i found out about @nuxt/content, which is exactly what i was looking for! although it wasnt regular vue, it was nuxt. after being traumatized by react, i figured adding another layer of complexity would make everything horrible and i would give up and start crying. but actually, nuxt hasnt been too bad at all! ive been working on the blog for... idk, a month? and i feel like i have a decent grasp on nuxt now, enough to get stuff done at least. once again, i have some learning to do, regarding ssr and ssg and stuff. i am somewhat familiar with the concepts, but this is my first time applying them
 
 i thought i was the type of person who wants as much control and as little abstraction as possible. that is not entirely untrue, but i find that the "nuxt" way of doing things doesnt feel restrictive. file based routing works nicely (in my react website, i basically wrote my own file-based routing, which wasnt very fun), the "layouts" feature is cool. global imports are awesome, its not something i consciously notice usually, but its definitely a big improvement to my developer experience. just being able to use anything anywhere and not having to import it (for the most part, i do still have to import nuxt types to use them in my typescript, but thats fine)
@@ -164,4 +175,6 @@ nuxt content in particular has been pretty good too. trying to implement my tool
 
 but now i dont feel like giving up on web dev anymore! i feel like ive finally found the passion that ive been looking for, and have regained the desire to code that i mostly lost after i took masonbot offline. so, thanks vue!
 
-anyway. that's about all for this blog post i think. it uh... ended up being longer than i expected it to be. but thats okay! i spent basically all day on this, since ive also been tweaking a bunch of actual code throughout the process of writing. but i think now im about to push my first post-launch update to the website. thanks for reading!
+#### conclusion
+
+that's about all for this blog post i think. it uh... ended up being longer than i expected it to be. but thats okay! i spent basically all day on this, since ive also been tweaking a bunch of actual code throughout the process of writing. but i think now im about to push my first post-launch update to the website. thanks for reading!
