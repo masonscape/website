@@ -10,7 +10,9 @@
     "postinstall": "nuxt prepare",
     "docker-build": "docker build --network=host -t masonscape .",
     "docker-start": "docker run -p 3000:3000 masonscape",
-    "docker-save": "docker save -o masonscape.tar masonscape"
+    "docker-save": "docker save -o masonscape.tar masonscape",
+    "docker-send": "scp masonscape.tar mason@67.205.151.27:/home/mason/",
+    "update-prod": "pnpm run docker-build && pnpm run docker-save && pnpm run docker-send && ssh mason@67.205.151.27 'docker stop $(docker ps -aq --filter ancestor=masonscape ) ; docker rm $(docker ps -aq --filter ancestor=masonscape) ; docker rmi masonscape:latest ; docker load < masonscape.tar && docker run -p 3000:3000 -d --restart unless-stopped masonscape'"
   },
   "dependencies": {
     "@nuxt/content": "3.5.1",
