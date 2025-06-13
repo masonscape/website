@@ -13,6 +13,9 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       routes: ['/blog']
+    },
+    experimental: {
+      websocket: true
     }
   },
 
@@ -91,7 +94,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/content', '@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxtjs/mdc'],
+  modules: ['@nuxt/content', '@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxtjs/mdc', '@vueuse/nuxt'],
 
   css: [
     '~/assets/css/base.css'
