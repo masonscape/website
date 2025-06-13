@@ -13,6 +13,10 @@ export default defineContentConfig({
     pages: defineCollection({
       type: 'page',
       source: 'pages/*.md',
+      schema: z.object({
+        published: z.number(),
+        modified: z.number()
+      })
     })
   }
 })
