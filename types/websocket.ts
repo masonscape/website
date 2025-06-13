@@ -1,15 +1,18 @@
 export interface ChatMessage {
   user: string
   content: string
-  timestamp: number
+  timestamp: number,
+  color: string
 }
 
-export type IncomingMessage = {
+export interface InitMessage {
+  type: 'init'
+  messages: ChatMessage[]
+}
+
+export interface NewMessage {
   type: 'new-message'
-  user: string
-  content: string
+  message: ChatMessage
 }
 
-export type OutgoingMessage =
-  | { type: 'init'; messages: ChatMessage[] }
-  | { type: 'new-message'; message: ChatMessage }
+export type IncomingMessage = InitMessage | NewMessage

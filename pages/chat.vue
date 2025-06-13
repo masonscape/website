@@ -7,7 +7,7 @@
       <p class="privacy-notice">This username will be saved in your browser in accordance with our <NuxtLink to="/privacy">Privacy Policy</NuxtLink></p>
     </div>
     <div ref="messageListRef" class="message-list">
-      <div v-for="message in messages" :key="message.timestamp" class="message">
+      <div v-for="message in messages" :key="message.timestamp" class="message" :style="{ '--mycolor': message.color, 'font-style': message.user === 'System' ? 'italic' : 'normal' }">
         <div class="info">
           <h2 class="username">{{ message.user }}</h2>
           <h3 class="timestamp">{{ formatTimestamp(message.timestamp) }}</h3>
@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { useWebSocket } from '@vueuse/core'
-import type { ChatMessage } from '~/types/websocket'
+import type { ChatMessage, IncomingMessage } from '~/types/websocket'
 
 definePageMeta({
   layout: false,
@@ -49,6 +49,7 @@ useHead({
 
 const messages = ref<ChatMessage[]>([])
 const myUsername = ref<string | null>(null)
+const myColor = ref<string | null>(null)
 const messageInput = ref('')
 const usernameInput = ref('')
 
@@ -57,11 +58,13 @@ const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
 const { status, data, send } = useWebSocket(`/api/websocket`, { autoReconnect: { retries: 10, delay: 1000 } })
 
-watch(data, (newValue) => {
-  const parsedMessage = JSON.parse(newValue)
+watch(data, (raw) => {
+  const parsedMessage = JSON.parse(raw) as IncomingMessage
 
-  if (parsedMessage) {
-    appendMessage(parsedMessage)
+  if (parsedMessage.type === 'init') {
+    messages.value = parsedMessage.messages
+  } else if (parsedMessage.type === 'new-message') {
+    appendMessage(parsedMessage.message)
   }
 })
 
@@ -69,23 +72,43 @@ watch(status, newValue => {
   console.log('status:', newValue)
 })
 
+watch(textareaRef, async (newVal) => {
+  newVal?.focus()
+})
+
 const appendMessage = (message: ChatMessage) => {
   messages.value = [message, ...messages.value]
 }
 
-const createNewMessage = (content: string) => {
+const createNewMessage = (content: string, ephemeral: boolean = false) => {
   const message = {
     user: myUsername.value,
+    content,
+    timestamp: Date.now(),
+    color: myColor.value
+  } as ChatMessage
+
+  appendMessage(message)
+  if (ephemeral) return
+
+  send(JSON.stringify(message))
+}
+
+const createNewSystemMessage = (content: string) => {
+  const message = {
+    user: 'System',
     content,
     timestamp: Date.now(),
   } as ChatMessage
 
   appendMessage(message)
-  send(JSON.stringify(message))
 }
 
 const formatTimestamp = (timestamp: number) => {
-  return new Date(timestamp).toLocaleString()
+  return new Date(timestamp).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit'
+  })
 }
 
 const scrollToBottom = () => {
@@ -96,11 +119,45 @@ const scrollToBottom = () => {
   })
 }
 
+const setColor = (color: string) => {
+  myColor.value = '#' + color
+  localStorage.setItem('chat-color', '#' + color)
+}
+
+const setUsername = (username: string) => {
+  myUsername.value = username
+  localStorage.setItem('chat-username', username)
+}
+
 const submitMessage = () => {
   const content = messageInput.value.trim()
   if (!content) return
 
-  createNewMessage(content)
+  if (content.startsWith('/')) {
+    if (content.startsWith('/setcolor')) {
+      const oldColor = myColor.value
+      const color = content.split(' ')[1].replace('#', '')
+      if (!color || !/^(?:[0-9a-fA-F]{3}){1,2}$/.test(color)) return
+
+      setColor(color)
+
+      createNewSystemMessage(`Changed your color from ${oldColor} to #${color}`)
+    } if (content.startsWith('/setname')) {
+      const oldName = myUsername.value
+      const name = content.split(' ').splice(1).join(' ')
+
+      if (name === 'System') {
+        setUsername('nice try bro you cant make your name system')
+      } else {
+        setUsername(name)
+      }
+
+      createNewSystemMessage(`Changed your name from '${oldName}' to '${name}'`)
+    }
+  } else {
+    createNewMessage(content)
+  }
+
   messageInput.value = ''
 
   nextTick(() => {
@@ -117,22 +174,19 @@ const autoResize = () => {
   textareaRef.value.style.height = Math.max(minHeight, textareaRef.value.scrollHeight) + 'px'
 }
 
-const setUsername = () => {
-  const username = usernameInput.value
-
-  localStorage.setItem('chat-username', username)
-  myUsername.value = username
-}
-
 onMounted(() => {
   const savedUsername = localStorage.getItem('chat-username')
+  const savedColor = localStorage.getItem('chat-color')
+
   if (savedUsername) {
     myUsername.value = savedUsername
   }
 
-  autoResize()
+  if (savedColor) {
+    myColor.value = savedColor
+  }
 
-  textareaRef.value?.focus()
+  autoResize()
 })
 
 watch(messages, () => {
@@ -160,23 +214,27 @@ watch(messages, () => {
 }
 
 .message {
+  --mycolor: var(--themecolor-inverted);
+
   display: flex;
   flex-direction: column;
-  background: var(--color-primary-95);
+  background: color-mix(in srgb, var(--color-primary-95) 90%, var(--mycolor) 10%);
   border-radius: 0.5em;
-  padding: 0.75em 1em;
-  max-width: 600px;
-  width: 100%;
+  padding: 0.8em 1.2em;
+  max-width: 30em;
+  width: 60%;
   margin: 0 auto;
   box-shadow: 0 1px 4px rgba(0,0,0,0.12);
 
-  animation: fadeIn 0.3s;
+  animation: fadeIn 0.2s;
+
+  outline: 1px solid var(--mycolor);
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(70%)
+    transform: scale(80%)
   }
   to {
     opacity: 1;
@@ -195,7 +253,7 @@ watch(messages, () => {
 .username {
   font-size: 1em;
   font-weight: bold;
-  color: var(--color-secondary-60);
+  color: var(--mycolor);
   margin: 0;
 }
 
@@ -207,7 +265,7 @@ watch(messages, () => {
 }
 
 .message-content {
-  margin: 0;
+  margin: 0 0 0.4em 0;
   word-break: break-word;
   font-weight: 0;
 }

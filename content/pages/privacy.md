@@ -2,7 +2,7 @@
 title: Privacy Policy
 description: Privacy policy for masonscape.com
 published: 1747788022796
-modified: 1749826365079
+modified: 1749841042873
 ---
 
 This website does not collect personal data for the purpose of tracking or identifying users.
@@ -24,7 +24,7 @@ Some data is stored within your browser's local storage to enable it to persiste
 This includes:
 - What color theme you have set the website to, via the theme switching button in the top right
 - Information about the [Nyanvas](https://masonscape.com/nyanvas) page such as your current list of active images (including images you have added yourself)
-- The username you set in the [chat page](https://masonscape.com/chat)
+- The username and color you set in the [chat page](https://masonscape.com/chat)
 
 This data generally stays on your device only, and is not processed by the server unless it happens to overlap with the following section (e.g. the chat username).
 
@@ -33,7 +33,7 @@ This data generally stays on your device only, and is not processed by the serve
 Some data is processed by the server when necessary for certain features to be able to function.
 
 This includes:
-- Message data (including username, message content, and timestamp) from the [chat page](https://masonscape.com/chat)
+- Message data (including username, color, message content, and timestamp) from the [chat page](https://masonscape.com/chat)
 
 ---
 
