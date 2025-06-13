@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!isMobile" class="nyanvas-container">
+  <div class="nyanvas-container">
     <canvas ref="canvas" />
     <div v-if="settingsShowing" class="settings-container">
       <div class="settings">
@@ -95,8 +95,6 @@ const settingsShowing = ref(false)
 const newImageSrc = ref('')
 const addInput = ref<HTMLInputElement | null>(null)
 
-const isMobile = ref(false)
-
 const eraseMode = ref(false)
 
 const backgroundImageUrl = ref<string>('')
@@ -123,7 +121,6 @@ const addDefaultImages = () => {
 }
 
 watch(imageSources, (newVal) => {
-  console.log('changed')
   localStorage.setItem('nyanvasImages', JSON.stringify(newVal))
 })
 
@@ -242,14 +239,16 @@ const setBackgroundImage = () => {
 }
 
 onMounted(async () => {
-  if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 'ontouchstart' in window || navigator.maxTouchPoints > 0) isMobile.value = true
-
   const savedImages = localStorage.getItem('nyanvasImages')
   console.log(savedImages)
   if (savedImages) {
-    const savedImageArray = JSON.parse(savedImages) as string[]
+    try {
+      const savedImageArray = JSON.parse(savedImages) as string[]
 
-    imageSources.value = savedImageArray
+      imageSources.value = savedImageArray
+    } catch {
+      console.log('couldnt parse saved images')
+    }
   }
 
   const el = canvas.value
@@ -316,7 +315,7 @@ onMounted(async () => {
       if (brushSize > 5) {
         brushSize -= 5
       }
-    } else if (key === 'shift') {
+    } else if (key === 'shift' && !e.ctrlKey && !e.altKey && !e.metaKey) {
       settingsShowing.value = !settingsShowing.value
     }
   }
