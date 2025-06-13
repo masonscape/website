@@ -39,7 +39,7 @@ const formattedModifiedDate = props.content.modified && formatDate(props.content
 <style scoped>
 .title {
   margin-bottom: 3em;
-  border-bottom: 1px var(--color-tertiary) solid
+  border-bottom: 1px var(--color-primary-70) solid
 }
 
 .title-text {

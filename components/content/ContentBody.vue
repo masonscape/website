@@ -92,7 +92,7 @@ const cleanContent = (content: BlogCollectionItem): BlogCollectionItem => {
   margin: 1.5rem 0;
   height: fit-content;
   padding: 1rem;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-95);
   border-left: 0.2em solid var(--color-accent);
   font-style: italic;
 }

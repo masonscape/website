@@ -51,13 +51,13 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   container-type: size;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-95);
   width: 100%;
   top: 0;
   height: var(--header-height);
   z-index: 1000;
 
-  border-bottom: 1px var(--color-tertiary) solid
+  border-bottom: 1px var(--color-primary-70) solid
 }
 
 .button-list {

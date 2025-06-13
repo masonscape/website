@@ -78,7 +78,7 @@ const showImage = (show: boolean) => {
   width: 80%;
   padding: 1em;
   margin: 2em auto 2em auto;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-95);
 }
 
 .image {

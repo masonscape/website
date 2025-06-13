@@ -23,13 +23,13 @@
 .footer {
   position: relative;
   display: flex;
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-95);
   width: 100%;
   height: clamp(var(--header-height), var(--header-height), fit-content);
   z-index: 1000;
   align-items: center;
 
-  border-top: 1px var(--color-tertiary) solid;
+  border-top: 1px var(--color-primary-70) solid;
 
   color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
 }

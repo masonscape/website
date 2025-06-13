@@ -64,7 +64,7 @@ useHead({
   height: 10em;
   border-radius: 0.5em;
   outline: 1px solid var(--color-secondary);
-  background-color: var(--color-primary-2);
+  background-color: var(--color-primary-95);
 }
 
 .post {
