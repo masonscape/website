@@ -1,4 +1,4 @@
-import type { ChatMessage } from "~/types/websocket"
+import type { ChatMessage, IncomingMessage } from "~/types/websocket"
 
 const room = 'CHAT'
 
@@ -6,7 +6,6 @@ const messageList: ChatMessage[] = []
 
 export default defineWebSocketHandler({
   open(peer) {
-    console.log('opened WS, sending init')
     peer.subscribe(room)
 
     const messageListPayload = JSON.stringify({ type: 'init', messages: messageList })
@@ -19,10 +18,13 @@ export default defineWebSocketHandler({
     console.log('error on WS', peer.id, error)
   },
   message(peer, message) {
-    const parsedMessage = JSON.parse(message.text())
-    const newMessagePayload = JSON.stringify({ type: 'new-message', message: parsedMessage })
+    const parsedMessage = JSON.parse(message.text()) as IncomingMessage
 
-    messageList.unshift(parsedMessage)
-    peer.publish(room, newMessagePayload)
+    if (parsedMessage.type === 'message') {
+      messageList.unshift(parsedMessage.message)
+      peer.publish(room, JSON.stringify(parsedMessage))
+    } else if (parsedMessage.type === 'effect') {
+      peer.publish(room, JSON.stringify(parsedMessage))
+    }
   }
 })

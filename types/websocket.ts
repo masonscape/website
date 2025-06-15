@@ -11,8 +11,13 @@ export interface InitMessage {
 }
 
 export interface NewMessage {
-  type: 'new-message'
+  type: 'message'
   message: ChatMessage
 }
 
-export type IncomingMessage = InitMessage | NewMessage
+export interface EffectMessage {
+  type: 'effect',
+  effect: string
+}
+
+export type IncomingMessage = InitMessage | NewMessage | EffectMessage

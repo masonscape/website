@@ -3,19 +3,26 @@
     <SiteHeader />
     <div v-if="!myUsername" class="username-selector-container">
       <h2 class="enter-a-username">Enter a username</h2>
-      <input v-model="usernameInput" class="chat-input" type="text" @keydown.enter.prevent="setUsername">
+      <input v-model="usernameInput" class="chat-input" type="text" @keydown.enter.prevent="setUsername(usernameInput)">
       <p class="privacy-notice">This username will be saved in your browser in accordance with our <NuxtLink to="/privacy">Privacy Policy</NuxtLink></p>
     </div>
-    <div ref="messageListRef" class="message-list">
-      <div v-for="message in messages" :key="message.timestamp" class="message" :style="{ '--mycolor': message.color, 'font-style': message.user === 'System' ? 'italic' : 'normal' }">
-        <div class="info">
-          <h2 class="username">{{ message.user }}</h2>
-          <h3 class="timestamp">{{ formatTimestamp(message.timestamp) }}</h3>
-        </div>
-        <p class="message-content">{{ message.content }}</p>
-      </div>
+      <div ref="messageListRef" class="message-list">
+        <transition-group ref="messageListRef" name="fade"  tag="div" class="message-list">
+          <div
+            v-for="message in messages" 
+            :key="message.timestamp" 
+            class="message" 
+            :style="{ '--mycolor': message.color, 'font-style': message.user === 'System' ? 'italic' : 'normal' }"
+          >
+            <div class="info">
+              <h2 class="username">{{ message.user }}</h2>
+              <h3 class="timestamp">{{ formatTimestamp(message.timestamp) }}</h3>
+            </div>
+            <p class="message-content">{{ message.content }}</p>
+          </div>
+        </transition-group>
     </div>
-    <div class="textbox-container">
+    <div class="interaction-bar-container">
       <textarea
         ref="textareaRef"
         v-model="messageInput"
@@ -25,6 +32,9 @@
         @input="autoResize"
         @keydown.enter.prevent="submitMessage"
       />
+      <button class="effects-button" @click="handleEffectClick">
+        <Icon name="material-symbols:kid-star-sharp" class="effects-button-icon"/>
+      </button>
     </div>
   </div>
 </template>
@@ -56,15 +66,19 @@ const usernameInput = ref('')
 const messageListRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
-const { status, data, send } = useWebSocket(`/api/websocket`, { autoReconnect: { retries: 10, delay: 1000 } })
+const { status, data, send } = useWebSocket(`/api/chat`, { autoReconnect: { retries: 10, delay: 1000 } })
 
 watch(data, (raw) => {
   const parsedMessage = JSON.parse(raw) as IncomingMessage
 
+  console.log(parsedMessage)
+
   if (parsedMessage.type === 'init') {
     messages.value = parsedMessage.messages
-  } else if (parsedMessage.type === 'new-message') {
+  } else if (parsedMessage.type === 'message') {
     appendMessage(parsedMessage.message)
+  } else if (parsedMessage.type === 'effect') {
+    playEffect(parsedMessage.effect)
   }
 })
 
@@ -91,7 +105,8 @@ const createNewMessage = (content: string, ephemeral: boolean = false) => {
   appendMessage(message)
   if (ephemeral) return
 
-  send(JSON.stringify(message))
+  const messagePayload = JSON.stringify({ type: 'message', message: message})
+  send(messagePayload)
 }
 
 const createNewSystemMessage = (content: string) => {
@@ -108,14 +123,6 @@ const formatTimestamp = (timestamp: number) => {
   return new Date(timestamp).toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit'
-  })
-}
-
-const scrollToBottom = () => {
-  nextTick(() => {
-    if (messageListRef.value) {
-      messageListRef.value.scrollTop = messageListRef.value.scrollHeight
-    }
   })
 }
 
@@ -147,12 +154,12 @@ const submitMessage = () => {
       const name = content.split(' ').splice(1).join(' ')
 
       if (name === 'System') {
-        setUsername('nice try bro you cant make your name system')
+        createNewSystemMessage('nice try bro you cant make your name system')
       } else {
         setUsername(name)
+        createNewSystemMessage(`Changed your name from '${oldName}' to '${name}'`)
       }
 
-      createNewSystemMessage(`Changed your name from '${oldName}' to '${name}'`)
     }
   } else {
     createNewMessage(content)
@@ -174,6 +181,28 @@ const autoResize = () => {
   textareaRef.value.style.height = Math.max(minHeight, textareaRef.value.scrollHeight) + 'px'
 }
 
+let isSquishing = false
+
+const handleEffectClick = () => {
+  const effectPayload = JSON.stringify({ type: 'effect', effect: effect })
+  send(effectPayload)
+  playEffect('squish')
+}
+
+const playEffect = (effect: string) => {
+  console.log(effect)
+
+  if (isSquishing) return
+
+  isSquishing = true
+  messageListRef.value?.classList.add('message-list-squish')
+
+  setTimeout(() => {
+    isSquishing = false
+    messageListRef.value?.classList.remove('message-list-squish')
+  }, 500)
+}
+
 onMounted(() => {
   const savedUsername = localStorage.getItem('chat-username')
   const savedColor = localStorage.getItem('chat-color')
@@ -188,10 +217,6 @@ onMounted(() => {
 
   autoResize()
 })
-
-watch(messages, () => {
-  scrollToBottom()
-})
 </script>
 
 <style scoped>
@@ -205,12 +230,13 @@ watch(messages, () => {
 }
 
 .message-list {
+  width: 100vw;
   flex: 1;
   overflow-y: auto;
-  padding: 1em 0.5em;
+  overflow-x: hidden;
   display: flex;
+  align-items: center;
   flex-direction: column-reverse;
-  gap: 1em;
 }
 
 .message {
@@ -221,24 +247,37 @@ watch(messages, () => {
   background: color-mix(in srgb, var(--color-primary-95) 90%, var(--mycolor) 10%);
   border-radius: 0.5em;
   padding: 0.8em 1.2em;
+  margin-bottom: 1em;
   max-width: 30em;
-  width: 60%;
-  margin: 0 auto;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
-
-  animation: fadeIn 0.2s;
+  width: 70vw;
 
   outline: 1px solid var(--mycolor);
 }
 
+.fade-enter-active {
+  animation: fadeIn 0.2s;
+}
+.fade-leave-active {
+  animation: fadeOut 0.2s;
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(80%)
+    transform: scale(80%);
   }
   to {
     opacity: 1;
-    transform: scale(100%)
+    transform: scale(100%);
+  }
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(100%);
+  }
+  to {
+    opacity: 0;
+    transform: scale(80%);
   }
 }
 
@@ -259,7 +298,7 @@ watch(messages, () => {
 
 .timestamp {
   font-size: 0.8em;
-  color: var(--color-secondary-50);
+  color: color-mix(in srgb, var(--color-secondary) 70%, var(--mycolor) 30%);
   margin: 0;
   margin-left: auto;
 }
@@ -270,16 +309,16 @@ watch(messages, () => {
   font-weight: 0;
 }
 
-.textbox-container {
+.interaction-bar-container {
   display: flex;
   justify-content: center;
-  padding: 1em 10% 1em 10%;
+  padding: 1em 5% 1em 5%;
   background: var(--color-primary-95);
   border-top: 1px solid var(--color-primary-70);
+  gap: 0.5em;
 }
 
 .message-input {
-  flex: 1;
   padding: 0.7em 1em;
   border-radius: 0.5em;
   border: 1px solid var(--color-primary-80);
@@ -287,11 +326,12 @@ watch(messages, () => {
   color: var(--color-secondary);
   font-size: 1em;
   outline: none;
-  word-break: break-all;
+  word-break: break-word;
   word-wrap: normal;
   height: 42px; /* fits one line + padding, tweak as needed */
   max-height: 10em;   /* grows up to 10em */
-  max-width: 30em;
+  width: 90%;
+  max-width: 24em;
   resize: none;       /* prevent manual resize */
   box-sizing: border-box;
   overflow-y: hidden; /* scrollbar appears only if needed via JS */
@@ -303,6 +343,46 @@ watch(messages, () => {
 
 .message-input::placeholder {
   color: var(--color-secondary-60)
+}
+
+.effects-button {
+  width: 42px;
+  height: 42px;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 0.5em;
+  border: 1px solid var(--color-primary-80);
+  background: var(--color-primary);
+  color: var(--color-secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+}
+
+.effects-button-icon {
+  padding: 0;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.message-list-squish .message {
+  animation: squish 0.5s ease-in-out;
+}
+
+@keyframes squish {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.1);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }
 
 .username-selector-container {
