@@ -1,15 +1,16 @@
 <template>
   <div class="game-area">
+    <h1>{{ entities.map(entity => entity.id) }}</h1>
     <div
-      v-for="user in users"
-      :key="user.id"
+      v-for="entity in entities"
+      :key="entity.id"
       class="user-dot"
       :style="{
-        left: user.x - user.size / 2 + 'px',
-        top: user.y - user.size / 2 + 'px',
-        width: user.size + 'px',
-        height: user.size + 'px',
-        background: user.color,
+        left: entity.x - entity.size / 2 + 'px',
+        top: entity.y - entity.size / 2 + 'px',
+        width: entity.size + 'px',
+        height: entity.size + 'px',
+        background: entity.color,
       }"
     />
     <!-- myUser comes after every other user so that it shows up always on top -->
@@ -29,37 +30,34 @@
 </template>
 
 <script setup lang="ts">
-import type { User } from '~/types/game'
+import type { Entity, Player } from '~/types/game'
 
 definePageMeta({
   layout: false
 })
 
-const users = ref<User[]>([]) // all users except me
+const entities = ref<Entity[]>([]) // all users except me
 const currentlyPressingList = new Set()
 const myId = ref<string | null>(null)
-const myUser = ref<User | null>(null)
+const myUser = ref<Player | null>(null)
 
 const { data, send } = useWebSocket('/api/game', { autoReconnect: true })
 
 watch(data, (raw) => {
   if (!raw) return
-  const msg = JSON.parse(raw)
+    const msg = JSON.parse(raw)
   if (msg.type === 'welcome') {
     myId.value = msg.id
-  } else if (msg.type === 'init') {
-    if (!myId.value) return
-    const mine = msg.users.find((u: User) => u.id === myId.value)
-    if (mine) myUser.value = { ...mine }
-    users.value = msg.users.filter((u: User) => u.id !== myId.value)
   } else if (msg.type === 'users') {
     if (!myId.value) return
+
     // Only update myUser if it doesn't exist yet (for reconnect edge cases)
-    const mine = msg.users.find((u: User) => u.id === myId.value)
+    const mine = msg.users.find((u: Player) => u.id === myId.value)
     if (mine && !myUser.value) {
       myUser.value = { ...mine }
     }
-    users.value = msg.users.filter((u: User) => u.id !== myId.value)
+
+    entities.value = msg.users.filter((u: Player) => u.id !== myId.value)
   }
 })
 
