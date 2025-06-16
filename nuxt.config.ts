@@ -10,7 +10,14 @@ export default defineNuxtConfig({
     port: 3000
   },
 
+  imports: {
+    dirs: ['utils', 'types']
+  },
+  
   nitro: {
+    imports: {
+      dirs: ['utils', 'types']
+    },
     prerender: {
       routes: ['/blog']
     },

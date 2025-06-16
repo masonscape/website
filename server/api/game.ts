@@ -1,51 +1,16 @@
-import type { Entity, NPC, Player, Peer } from "~/types/game"
-
 const room = 'GAME'
 
-const enemy: NPC = {
-  id: 'redenemy',
-  x: 250,
-  y: 250,
-  size: 100,
-  color: '#ff0000'
-}
-
-const npcList: NPC[] = [enemy]
+const npcList: NPC[] = []
 const playerList: Player[] = []
 const peerList = new Set<Peer>()
 let gameLoopInterval: NodeJS.Timeout | null  = null
 
-function randomColor() {
-  // Generate a random color in hex format
-  return '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')
-}
-
-const moveEntity = (entity: Entity, vector: { x: number, y: number }) => {
-  entity.x += vector.x
-  entity.y += vector.y
-}
-
 const gameLoop = () => {
   if (playerList.length === 0) return
   
-  const player = playerList[0]
-  const xDistance = player.x - enemy.x
-  const yDistance = player.y - enemy.y
-
-  moveEntity(enemy, { x: xDistance / 50, y: yDistance / 50 })
-
-  // if (enemy.x < playerList[0].x) {
-  //   enemy.x += distance / 100
-  // }
-  // if (enemy.x > playerList[0].x) {
-  //   enemy.x -= distance / 100
-  // }
-  // if (enemy.y < playerList[0].y) {
-  //   enemy.y += distance / 100
-  // }
-  // if (enemy.y > playerList[0].y) {
-  //   enemy.y -= distance / 100
-  // }
+  npcList.forEach(npc => {
+    enemyChasePlayer(npc, playerList.filter(player => player.id === npc.id.replace('enemy', ''))[0])
+  })
 }
 
 const broadcastGameState = () => {
@@ -67,6 +32,7 @@ const startGameLoop = () => {
     broadcastGameState()
   }, 1000 / 60)
 }
+
 const stopGameLoop = () => {
   if (!gameLoopInterval) return
 
@@ -80,13 +46,18 @@ export default defineWebSocketHandler({
     peerList.add(peer)
     peer.subscribe(room)
 
-    playerList.push({
+    const newPlayer = createEntity({
       id: peer.id,
-      x: Math.random() * 500,
-      y: Math.random() * 500,
-      size: 50,
-      color: randomColor()
-    })
+    }) as Player
+
+    const newPlayerEnemy = createEntity({
+      id: 'enemy' + peer.id,
+      size: 100,
+      color: '#ff0000'
+    }) as NPC
+
+    playerList.push(newPlayer)
+    npcList.push(newPlayerEnemy)
 
     startGameLoop()
 
@@ -99,18 +70,23 @@ export default defineWebSocketHandler({
     if (parsedMessage.type === 'move') {
       const idx = playerList.findIndex(user => user.id === parsedMessage.id)
       if (idx !== -1) {
-        playerList[idx].x = parsedMessage.x
-        playerList[idx].y = parsedMessage.y
+        playerList[idx].position.x = parsedMessage.x
+        playerList[idx].position.y = parsedMessage.y
       }
     }
   },
   close(peer) {
     const idx = playerList.findIndex(user => user.id === peer.id)
+    const enemyId = npcList.findIndex(npc => npc.id === 'enemy' + peer.id)
 
     // Remove the player from the playerList
     if (idx !== -1) {
       peerList.delete(peer)
       playerList.splice(idx, 1)
+    }
+
+    if (enemyId !== -1) {
+      npcList.splice(enemyId, 1)
     }
 
     // If nobody is playing, stop the game loop

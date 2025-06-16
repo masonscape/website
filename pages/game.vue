@@ -1,13 +1,12 @@
 <template>
   <div class="game-area">
-    <h1>{{ entities.map(entity => entity.id) }}</h1>
     <div
       v-for="entity in entities"
       :key="entity.id"
       class="user-dot"
       :style="{
-        left: entity.x - entity.size / 2 + 'px',
-        top: entity.y - entity.size / 2 + 'px',
+        left: entity.position.x - entity.size / 2 + 'px',
+        top: entity.position.y - entity.size / 2 + 'px',
         width: entity.size + 'px',
         height: entity.size + 'px',
         background: entity.color,
@@ -18,8 +17,8 @@
       v-if="myUser"
       class="user-dot"
       :style="{
-        left: myUser.x - myUser.size / 2 + 'px',
-        top: myUser.y - myUser.size / 2 + 'px',
+        left: myUser.position.x - myUser.size / 2 + 'px',
+        top: myUser.position.y - myUser.size / 2 + 'px',
         width: myUser.size + 'px',
         height: myUser.size + 'px',
         background: myUser.color,
@@ -30,8 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import type { Entity, Player } from '~/types/game'
-
 definePageMeta({
   layout: false
 })
@@ -51,13 +48,15 @@ watch(data, (raw) => {
   } else if (msg.type === 'users') {
     if (!myId.value) return
 
+    const serverEntities = msg.users as Entity[]
+
     // Only update myUser if it doesn't exist yet (for reconnect edge cases)
-    const mine = msg.users.find((u: Player) => u.id === myId.value)
+    const mine = serverEntities.find((u: Player) => u.id === myId.value)
     if (mine && !myUser.value) {
       myUser.value = { ...mine }
     }
 
-    entities.value = msg.users.filter((u: Player) => u.id !== myId.value)
+    entities.value = serverEntities.filter((u: Player) => u.id !== myId.value)
   }
 })
 
@@ -65,13 +64,13 @@ const isPressing = (key: string) => currentlyPressingList.has(key)
 
 const move = (dx: number, dy: number) => {
   if (!myUser.value || !myId.value) return
-  myUser.value.x += dx
-  myUser.value.y += dy
+  myUser.value.position.x += dx
+  myUser.value.position.y += dy
   send(JSON.stringify({
     type: 'move',
     id: myId.value,
-    x: myUser.value.x,
-    y: myUser.value.y
+    x: myUser.value.position.x,
+    y: myUser.value.position.y
   }))
 }
 
@@ -113,6 +112,15 @@ onMounted(() => {
 
   window.addEventListener('keyup', (e) => {
     currentlyPressingList.delete(e.key)
+  })
+
+  window.addEventListener('mousedown', (e) => {
+    if (!myUser.value) return
+
+    myUser.value.position = {
+      x: e.clientX,
+      y: e.clientY
+    }
   })
 
   requestAnimationFrame(update)
