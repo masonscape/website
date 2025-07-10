@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Npm Install
-        run: pnpm i
       - name: configure ssh connection
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
