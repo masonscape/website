@@ -7,12 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "deploy:stop-container": "docker stop masonscape || true",
-    "deploy:remove-container": "docker container rm masonscape || true",
-    "deploy:start-container": "docker run --name masonscape -d -p 3000:3000 masonscape",
-    "deploy:docker-build": "cd ../.. && docker build --network=host -t masonscape -f ./apps/main/Dockerfile .", 
-    "deploy": "npm run deploy:docker-build && npm run deploy:stop-container && npm run deploy:remove-container && npm run deploy:start-container"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxt/content": "3.5.1",
