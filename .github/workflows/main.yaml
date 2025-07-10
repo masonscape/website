@@ -3,20 +3,29 @@ name: Deploy www.masonscape.com
 on: [push]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-
+          
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-
-      - name: configure ssh connection
+          
+      # Build Docker image locally
+      - name: Build Docker image
+        run: pnpm run deploy:docker-build
+          
+      # Save the built image to a tarball
+      - name: Save Docker image
+        run: docker save -o masonscape.tar masonscape
+          
+      # Configure SSH connection
+      - name: Configure SSH connection
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -24,8 +33,21 @@ jobs:
           ssh-keyscan -p ${{ secrets.SSH_PORT }} -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           ssh-agent -a $SSH_AUTH_SOCK > /dev/null
           ssh-add - <<< "${{ secrets.SSH_KEY }}"
-      - name: Deploy
-        run: pnpm run deploy-main
+          
+      # Transfer the image to the droplet and load it
+      - name: Transfer and load Docker image
+        run: |
+          scp -P ${{ secrets.SSH_PORT }} masonscape.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/masonscape.tar
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker load -i /tmp/masonscape.tar && rm /tmp/masonscape.tar"
         env:
-          DOCKER_HOST: ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_PORT }}
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          
+      # Deploy the container on the droplet
+      - name: Deploy container
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "docker stop masonscape || true; \
+             docker container rm masonscape || true; \
+             docker run --name masonscape -d -p 3000:3000 masonscape"
+        env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
