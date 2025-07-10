@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "docker-main": "docker build --network=host -t masonscape -f ./apps/main/Dockerfile ."
+    "deploy-main": "cd apps/main && pnpm run deploy"
   },
   "private": true,
   "workspaces": [
