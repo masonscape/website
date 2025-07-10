@@ -1,4 +1,4 @@
-import { processTooltipSyntax }  from './content-plugins/tooltip'
+import { processTooltipSyntax } from './content-plugins/tooltip'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['utils', 'types']
   },
-  
+
   nitro: {
     imports: {
       dirs: ['utils', 'types']
@@ -81,7 +81,7 @@ export default defineNuxtConfig({
 
   mdc: {
     headings: {
-      anchorLinks: false 
+      anchorLinks: false
     }
   },
 
@@ -99,6 +99,12 @@ export default defineNuxtConfig({
         }
       },
     },
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['debug']
+    }
   },
 
   modules: ['@nuxt/content', '@nuxt/eslint', '@nuxt/icon', '@nuxt/image', '@nuxtjs/mdc', '@vueuse/nuxt'],
