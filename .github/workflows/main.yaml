@@ -18,7 +18,7 @@ jobs:
           
       # Build Docker image locally
       - name: Build Docker image
-        run: pnpm run deploy:docker-build
+        run: pnpm run deploy-main
           
       # Save the built image to a tarball
       - name: Save Docker image
