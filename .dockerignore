@@ -1,8 +1,8 @@
-node_modules
-.dockerignore
-Dockerfile
-.vscode
-.output
-.nuxt
-.data
-.git
+**/node_modules
+**/.dockerignore
+**/Dockerfile
+**/.vscode
+**/.output
+**/.nuxt
+**/.data
+**/.git
