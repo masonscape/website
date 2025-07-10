@@ -18,7 +18,8 @@ RUN pnpm install --filter ./apps/main...
 # Copy the rest of the project
 # COPY . ./
 
-ENV GENERATE_SOURCEMAP false
+ENV GENERATE_SOURCEMAP=false
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Build the project
 WORKDIR /repo/apps/main
