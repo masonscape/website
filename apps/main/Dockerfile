@@ -18,6 +18,8 @@ RUN pnpm install --filter ./apps/main...
 # Copy the rest of the project
 # COPY . ./
 
+ENV GENERATE_SOURCEMAP false
+
 # Build the project
 WORKDIR /repo/apps/main
 RUN pnpm run build
