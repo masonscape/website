@@ -1,4 +1,13 @@
 import { processTooltipSyntax } from './content-plugins/tooltip'
+import { readdirSync } from 'node:fs'
+import { join } from 'node:path'
+
+function getBlogRoutes() {
+  const blogDir = join(process.cwd(), 'content/blog')
+  return readdirSync(blogDir)
+    .filter(file => file.endsWith('.md'))
+    .map(file => '/blog/' + file.replace(/\.md$/, ''))
+}
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -19,7 +28,7 @@ export default defineNuxtConfig({
       dirs: ['app/utils', 'shared/types']
     },
     prerender: {
-      routes: ['/blog']
+      routes: ['/blog', ...getBlogRoutes(), '/privacy', '/contact', '/'],
     },
     experimental: {
       websocket: true
@@ -102,6 +111,7 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    // fix a bug with micromark not importing 'debug' properly 
     optimizeDeps: {
       include: ['debug']
     }
