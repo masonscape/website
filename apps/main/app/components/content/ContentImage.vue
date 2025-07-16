@@ -14,10 +14,10 @@ const showImage = (show: boolean) => {
       +
     </div>
     <div class="background" @click="() => showImage(false)" />
-    <NuxtImg class="fullscreen-image" loading=lazy :src="'/blog-images/' + src" format="webp" quality="90" />
+    <NuxtImg class="fullscreen-image" :src="'/blog-images/' + src" format="webp" quality="90" />
   </div>
   <figure class="image-container">
-    <NuxtImg class="image" loading=lazy :src="'/blog-images/' + src" format="webp" width="1000" quality="80" @click="() => showImage(true)" />
+    <NuxtImg class="image" :src="'/blog-images/' + src" format="webp" width="1000" quality="80" @click="() => showImage(true)" />
     <figcaption class="caption">{{ alt }}</figcaption>
   </figure>
 </template>
