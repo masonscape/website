@@ -1,86 +1,95 @@
 <template>
-  <div v-show="!loading" class="shiny-wrapper" @click="closePopup">
+  <div class="shiny-wrapper" @click="closePopup">
     <h1 class="title">Dynamax Adventure Shiny Tracker</h1>
     <hr>
-    <div class="attempt-header-row">
-      <img class="header-img" src="http://graphics.tppcrpg.net/xy/shiny/487M-1.gif" alt="Shiny Giratina Left">
-      <div class="attempt-header-center">
-        <h2 class="attempts">Day {{ Math.round(howLongSinceStartingHunt / 86400000) + 1 }} · Attempt {{ currentAttemptNumber }}</h2>
-        <div class="button-wrapper">
-          <button
-            class="button"
-            :style="{ '--result-color': 'var(--success-color)' }"
-            @click="addAttempt(true, phaseInput)"
-          >Success</button>
-          <button
-            class="button"
-            :style="{ '--result-color': 'var(--failure-color)' }"
-            @click="addAttempt(false, phaseInput)"
-          >Failure</button>
-        </div>
-        <input
-          v-model="phaseInput"
-          class="phase-input"
-          type="text"
-          placeholder="Phase"
-          autocomplete="off"
-          @click.stop
-        >
-      </div>
-      <img class="header-img" src="http://graphics.tppcrpg.net/xy/shiny/487M.gif" alt="Shiny Giratina Right">
+
+    <div v-show="loading" >
+      <h2>Looking for existing data...</h2>
     </div>
 
-    <div v-if="attemptsList.length > 0">
-      <hr>
-      <h4>Success rate: {{ (successRate * 100).toFixed(2) }}%</h4>
-      <h4>Chance to have found your shiny by now: {{ (chanceAtLeastOneShiny * 100).toFixed(2) }}%</h4>
-      <h4>Average attempts per day: {{ averagePerDay.toFixed(2) }}</h4>
-      <hr>
-
-      <div class="attempt-history">
-        <div :key="attemptGridKey" class="attempt-grid">
-          <div
-            v-for="attempt in attemptsList"
-            :key="attempt.number"
-            class="history-attempt"
-            :style="{ '--result-color': attempt.success ? 'var(--success-color)' : 'var(--failure-color)' }"
-            @click.stop="selectAttempt(attempt)"
+    <div v-show="!loading">
+      <div v-show="!loading" class="attempt-header-row">
+        <img class="header-img" src="http://graphics.tppcrpg.net/xy/shiny/487M-1.gif" alt="Shiny Giratina Left">
+        <div class="attempt-header-center">
+          <h2 class="attempts">Day {{ Math.round(howLongSinceStartingHunt / 86400000) + 1 }} · Attempt {{ currentAttemptNumber }}</h2>
+          <div class="button-wrapper">
+            <button
+              class="button"
+              :style="{ '--result-color': 'var(--success-color)' }"
+              @click="addAttempt(true, phaseInput)"
+            >Success</button>
+            <button
+              class="button"
+              :style="{ '--result-color': 'var(--failure-color)' }"
+              @click="addAttempt(false, phaseInput)"
+            >Failure</button>
+          </div>
+          <input
+            v-model="phaseInput"
+            class="phase-input"
+            type="text"
+            placeholder="Phase"
+            autocomplete="off"
+            @click.stop
           >
-            <div class="attempt-number">{{ attempt.number }}</div>
-            <div class="attempt-content">
-              <div class="attempt-timestamp">{{ dayjs(attempt.date).fromNow() }}</div>
-              <div v-if="attempt.phase" class="attempt-phase">{{ attempt.phase }}</div>
-            </div>
+        </div>
+        <img class="header-img" src="http://graphics.tppcrpg.net/xy/shiny/487M.gif" alt="Shiny Giratina Right">
+      </div>
 
-            <div v-if="selectedAttempt?.number === attempt.number" class="attempt-popup" @click.stop>
-              <button @click="toggleSuccess(attempt)">Toggle Success</button>
-              <button @click="changeDate(attempt)">Change Date</button>
-              <button @click="editPhase(attempt)">Edit Phase</button>
-              <button @click="deleteAttempt(attempt)">Delete Attempt</button>
+
+      <div v-show="!loading" v-if="attemptsList.length > 0">
+        <hr>
+        <h4>Success rate: {{ (successRate * 100).toFixed(2) }}%</h4>
+        <h4>Chance to have found your shiny by now: {{ (chanceAtLeastOneShiny * 100).toFixed(2) }}%</h4>
+        <h4>Average attempts per day: {{ averagePerDay.toFixed(2) }}</h4>
+        <hr>
+
+        <div class="attempt-history">
+          <div :key="attemptGridKey" class="attempt-grid">
+            <div
+              v-for="attempt in attemptsList"
+              :key="attempt.number"
+              class="history-attempt"
+              :style="{ '--result-color': attempt.success ? 'var(--success-color)' : 'var(--failure-color)' }"
+              @click.stop="selectAttempt(attempt)"
+            >
+              <div class="attempt-number">{{ attempt.number }}</div>
+              <div class="attempt-content">
+                <div class="attempt-timestamp">{{ dayjs(attempt.date).fromNow() }}</div>
+                <div v-if="attempt.phase" class="attempt-phase">{{ attempt.phase }}</div>
+              </div>
+
+              <div v-if="selectedAttempt?.number === attempt.number" class="attempt-popup" @click.stop>
+                <button @click="toggleSuccess(attempt)">Toggle Success</button>
+                <button @click="changeDate(attempt)">Change Date</button>
+                <button @click="editPhase(attempt)">Edit Phase</button>
+                <button @click="deleteAttempt(attempt)">Delete Attempt</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <hr>
+      <hr>
 
-    <div class="import-export-wrapper">
-      <button class="import-export-btn" @click="handleExportClick">Export</button>
-      <button class="import-export-btn" @click="handleImportClick">Import</button>
-    </div>
+      <div class="import-export-wrapper">
+        <button class="import-export-btn" @click="handleExportClick">Export</button>
+        <button class="import-export-btn" @click="handleImportClick">Import</button>
+      </div>
 
-    <div v-if="exportedData" class="export-output">
-      <textarea
-        readonly
-        :value="exportedData"
-        @focus="selectText"
-      />
-    </div>
+      <div v-if="exportedData" class="export-output">
+        <textarea
+          readonly
+          :value="exportedData"
+          @focus="selectText"
+        />
+      </div>
 
-    <div v-if="showImport" class="import-input">
-      <textarea v-model="importInput" placeholder="Paste exported JSON here" />
-      <button class="import-export-btn" @click="importData">Import Data</button>
+      <div v-if="showImport" class="import-input">
+        <textarea v-model="importInput" placeholder="Paste exported JSON here" />
+        <button class="import-export-btn" @click="importData">Import Data</button>
+      </div>
+
     </div>
   </div>
 </template>
@@ -88,6 +97,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { DatabaseSync } from 'node:sqlite'
 import { ref, computed, watch, onMounted } from 'vue'
 
 dayjs.extend(relativeTime)
@@ -279,8 +289,10 @@ function handleImportClick() {
 
 hr {
   border: 1px solid var(--color-primary-70);
-  width: 54em;
+  width: min(54em, 80vw);
   margin: 2em 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .attempt-header-row {
