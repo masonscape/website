@@ -33,6 +33,8 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@iconify-json/grommet-icons": "^1.2.1",
+    "@iconify-json/material-symbols": "^1.2.29",
     "@types/unist": "^3.0.3",
     "@types/ws": "^8.18.1",
     "typescript": "^5.8.3"

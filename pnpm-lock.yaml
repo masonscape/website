@@ -96,6 +96,12 @@ importers:
         specifier: ^8.18.3
         version: 8.18.3
     devDependencies:
+      '@iconify-json/grommet-icons':
+        specifier: ^1.2.1
+        version: 1.2.1
+      '@iconify-json/material-symbols':
+        specifier: ^1.2.29
+        version: 1.2.29
       '@types/unist':
         specifier: ^3.0.3
         version: 3.0.3
@@ -733,6 +739,12 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/grommet-icons@1.2.1':
+    resolution: {integrity: sha512-x5RT+J4QIUUsgLobgBXjaKp+gpjIy1fMyBSdbhU5nv8F5it3tkmqj2/U2jt8KRgjVnlIgvKqKsGVll48flMnew==}
+
+  '@iconify-json/material-symbols@1.2.29':
+    resolution: {integrity: sha512-UUSrsl0gHF0GjAB9eZOpXrj7/v55ayMzo3QnMwUqP/FSfSkITKLR7CsBmUIFS8eEj8eRTfBNWA1yiIJR6UOdWg==}
 
   '@iconify/collections@1.0.566':
     resolution: {integrity: sha512-rilPX42tJve3z/HUQdZBrMLH/d8OZlMw+D+nMsxsiC/Miyws/WGq8DtV2w9jGGZBd6HJ+VQ3prIIV7UWhV+2ug==}
@@ -6554,6 +6566,14 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/grommet-icons@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-symbols@1.2.29':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.566':
     dependencies:
