@@ -34,12 +34,10 @@
   --button-size: calc(var(--header-height) / 2);
 
   font-size: 16px;
-
-  font-family: Helvetica, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-
 }
 
 :root {
+  font-family: Helvetica, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--color-primary);
   color: var(--color-secondary);
 }
