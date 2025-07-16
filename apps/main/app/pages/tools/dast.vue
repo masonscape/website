@@ -97,7 +97,6 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { DatabaseSync } from 'node:sqlite'
 import { ref, computed, watch, onMounted } from 'vue'
 
 dayjs.extend(relativeTime)
