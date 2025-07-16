@@ -72,10 +72,10 @@ export const accelerateEntityTowardsCoordinates = (entity: Entity, coordinates: 
 
     // Exponential speed based on distance
     const speed = dist ** 1.2  // adjust exponent and scale factor as needed
-    
+
     accelerateEntity(entity, {
       x: dirX * speed,
-      y: dirY * speed 
+      y: dirY * speed
     }, speed)
   }
 }

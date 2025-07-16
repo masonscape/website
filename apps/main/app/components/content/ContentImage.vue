@@ -14,10 +14,10 @@ const showImage = (show: boolean) => {
       +
     </div>
     <div class="background" @click="() => showImage(false)" />
-    <img class="fullscreen-image" :src="'../' + src">
+    <img class="fullscreen-image" :src="src">
   </div>
   <figure class="image-container">
-    <img class="image" :src="'../' + src" @click="() => showImage(true)">
+    <img class="image" :src="src" @click="() => showImage(true)">
     <figcaption class="caption">{{ alt }}</figcaption>
   </figure>
 </template>

@@ -5,7 +5,7 @@
       <div class="settings">
         <div class="image-buttons">
           <input type="button" class="image-button" value="Add default images" @click="addDefaultImages">
-          <input type="button" class="image-button" value="Delete selected" @click="() => removeImage(selectedImage)">
+          <input type="button" class="image-button" value="Delete selected" @click="() => removeImage(selectedImage!)">
         </div>
         <div class="image-selector">
           <div
@@ -149,7 +149,7 @@ const redraw = () => {
 
 const addImage = (x: number, y: number) => {
   const ctx = canvas.value?.getContext('2d')
-  const imgEl = preloadedImages.get(selectedImage.value)
+  const imgEl = preloadedImages.get(selectedImage.value!)
   if (!ctx || !imgEl) return
 
   const { naturalWidth, naturalHeight } = imgEl
@@ -298,7 +298,7 @@ onMounted(async () => {
   }
 
   const cycleImage = () => {
-    const currentImageIndex = imageSources.value.indexOf(selectedImage.value)
+    const currentImageIndex = imageSources.value.indexOf(selectedImage.value!)
     const newIndex = (currentImageIndex + 1) % imageSources.value.length
     selectedImage.value = imageSources.value[newIndex]
   }

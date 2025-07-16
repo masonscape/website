@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { useWebSocket } from '@vueuse/core'
-import type { ChatMessage, IncomingMessage } from '~/types/websocket'
+import type { ChatMessage, IncomingMessage } from '#shared/types/websocket'
 
 definePageMeta({
   layout: false,
@@ -143,7 +143,7 @@ const submitMessage = () => {
   if (content.startsWith('/')) {
     if (content.startsWith('/setcolor')) {
       const oldColor = myColor.value
-      const color = content.split(' ')[1].replace('#', '')
+      const color = content.split(' ')[1]!.replace('#', '')
       if (!color || !/^(?:[0-9a-fA-F]{3}){1,2}$/.test(color)) return
 
       setColor(color)

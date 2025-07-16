@@ -27,7 +27,7 @@ onMounted(() => {
       <div class="logo">
         <div class="picture-wrapper">
           <div class="placeholder-logo"/>
-          <img v-if="typeof isSpecialTheme === 'boolean' && !isSpecialTheme" class="picture" src="public/MasonCircle.svg">
+          <img v-if="typeof isSpecialTheme === 'boolean' && !isSpecialTheme" class="picture" src=/MasonCircle.svg>
           <MasonPicture v-else class="picture" />
         </div>
       </div>

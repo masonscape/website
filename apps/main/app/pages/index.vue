@@ -13,28 +13,28 @@ useHead({
 <template>
   <div class="main-page">
     <div class="image-text-group">
-      <img src="public/MasonCircle.svg" class="image">
+      <img src="/MasonCircle.svg" class="image">
       <h1>Welcome to the masonscape!</h1>
-      <img src="public/MasonCircle.svg" class="image">
+      <img src="/MasonCircle.svg" class="image">
     </div>
     <NuxtLink to="/blog" class="bloglink">Click here to visit the blog!</NuxtLink>
     
     <div class="image-text-group">
-      <img src="public/Vue.svg" class="image"> 
+      <img src="/Vue.svg" class="image"> 
       <h2>This is my website, built using <a href="https://vuejs.org/" target="blank">Vue</a></h2>
-      <img src="public/Vue.svg" class="image"> 
+      <img src="/Vue.svg" class="image"> 
     </div>
   
     <div class="image-text-group">
-      <img src="public/Nuxt.svg" class="image">
+      <img src="/Nuxt.svg" class="image">
       <h2>(or more specifically, <a href="https://nuxt.com/" target="blank">Nuxt</a>)</h2>
-      <img src="public/Nuxt.svg" class="image">
+      <img src="/Nuxt.svg" class="image">
     </div>
 
     <div class="image-text-group">
-      <img src="public/Nuxt.svg" class="image">
+      <img src="/Nuxt.svg" class="image">
       <h2>(or more specificallyer, <a href="https://content.nuxt.com/" target="blank">Nuxt Content</a>)</h2>
-      <img src="public/Nuxt.svg" class="image">
+      <img src="/Nuxt.svg" class="image">
     </div>
   </div>
 </template>

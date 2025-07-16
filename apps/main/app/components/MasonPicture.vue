@@ -7,10 +7,12 @@
 const canvasRef = ref<null | HTMLCanvasElement>(null)
 const secondaryColor = ref<null | string>(null)
 
+type NineStrings = [string, string, string, string, string, string, string, string, string]
+
 function generateColorScale(
   originalHex: string,
   increment: { r: number, g: number, b: number }
-): string[] {
+): NineStrings {
   // Parse hex string into decimal values
   const hexToDec = (hex: string) => parseInt(hex, 16)
   
@@ -56,7 +58,7 @@ function generateColorScale(
     const b = baseB + (increment.b * mult)
     
     return `#${decToHex(r)}${decToHex(g)}${decToHex(b)}`
-  })
+  }) as NineStrings
 }
 
 const watchCSSVariable = (variableName: string, callback: (value: string) => void) => {

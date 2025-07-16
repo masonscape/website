@@ -144,7 +144,11 @@ const chanceAtLeastOneShiny = computed(() => {
 const howLongSinceStartingHunt = computed(() => {
   if (attemptsList.value.length === 0) return 0
 
-  const beginTime = attemptsList.value[attemptsList.value.length - 1].date
+  const firstAttempt = attemptsList.value[attemptsList.value.length - 1]
+
+  if (!firstAttempt) return 0
+
+  const beginTime = firstAttempt.date
   const endTime = Date.now()
   const elapsedMilliseconds = endTime - beginTime
 
@@ -184,7 +188,7 @@ function closePopup() {
 function toggleSuccess(attempt: Attempt) {
   const idx = attemptsList.value.findIndex(a => a.number === attempt.number)
   if (idx === -1) return
-  attemptsList.value[idx] = { ...attemptsList.value[idx], success: !attempt.success }
+  attemptsList.value[idx] = { ...attemptsList.value[idx], success: !attempt.success } as Attempt
   selectedAttempt.value = null
 }
 

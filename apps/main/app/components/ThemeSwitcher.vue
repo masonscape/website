@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTheme, type Theme } from '~/store/theme'
+import { useTheme, type Theme } from '~/../store/theme'
 
 const currentTheme = useTheme()
 
@@ -86,7 +86,7 @@ const getNextTheme = (currentTheme: Theme): Theme => {
       ? 0 // Cycle back to the beginning of the theme list
       : currentThemeIndex + 1 // Else go to the next theme in the list
 
-  return themeList[nextThemeIndex]
+  return themeList[nextThemeIndex]!
 }
 
 const applyTheme = (theme: Theme) => {

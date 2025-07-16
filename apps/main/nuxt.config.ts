@@ -11,12 +11,12 @@ export default defineNuxtConfig({
   },
 
   imports: {
-    dirs: ['utils', 'types']
+    dirs: ['app/utils', 'shared/types']
   },
 
   nitro: {
     imports: {
-      dirs: ['utils', 'types']
+      dirs: ['app/utils', 'shared/types']
     },
     prerender: {
       routes: ['/blog']
