@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTheme, type Theme } from '~/../store/theme'
+import { useTheme, type Theme } from '~/composables/theme'
 
 const currentTheme = useTheme()
 

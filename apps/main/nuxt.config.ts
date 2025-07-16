@@ -1,4 +1,4 @@
-import { processTooltipSyntax } from './content-plugins/tooltip'
+import { processTooltipSyntax } from './app/utils/tooltip'
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 

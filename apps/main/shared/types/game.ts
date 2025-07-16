@@ -1,3 +1,5 @@
+import type { defineWebSocketHandler } from 'h3'
+
 type HandlerHooks = Parameters<typeof defineWebSocketHandler>[0]
 type OpenHook = NonNullable<HandlerHooks['open']>
 export type Peer = Parameters<OpenHook>[0]

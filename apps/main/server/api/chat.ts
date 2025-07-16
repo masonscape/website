@@ -1,5 +1,3 @@
-import type { ChatMessage, IncomingMessage } from "~/types/websocket"
-
 const room = 'CHAT'
 
 const messageList: ChatMessage[] = []
