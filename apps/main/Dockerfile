@@ -25,6 +25,10 @@ ENV NODE_OPTIONS="--max-old-space-size=4096"
 WORKDIR /repo/apps/main
 RUN pnpm run build
 
+# Delete unoptimized versions of blog images. These are optimized by NuxtImg via my ContentImage.vue component, so we don't want the original, uncompressed files taking up space on the final image
+RUN rm -rf .output/public/blog-images
+
+
 # Build Stage 2: Minimal image with only nodejs and output
 FROM alpine:3.22
 WORKDIR /app

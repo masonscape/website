@@ -13,11 +13,11 @@ im mason! im in my early 20s and i live in the midwest
 
 i have some cats
 
-:ContentImage{ src="/kitties.png" alt="i think that's charlie closest to the camera, and slim jim behind him. its easier to tell them apart when they stand up and you can see slim jims big belly" }
+:ContentImage{ src="kitties.png" alt="i think that's charlie closest to the camera, and slim jim behind him. its easier to tell them apart when they stand up and you can see slim jims big belly" }
 
 and some dogs
 
-:ContentImage{ src="/puppies.png" alt="thats duke on the left and dilla on the right. i swear they dont usually look this scary" }
+:ContentImage{ src="puppies.png" alt="thats duke on the left and dilla on the right. i swear they dont usually look this scary" }
 
 they're all pretty young, except skye the cat (not pictured) who is 12. but duke and dilla are only like 4, and the kitties are like... 2?
 
