@@ -54,6 +54,6 @@ jobs:
           ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
             "docker stop test-masonscape || true; \
              docker container rm test-masonscape || true; \
-             docker run --name test-masonscape -d -p 3000:3000 test-masonscape"
+             docker run --name test-masonscape -d -p 8080:80 test-masonscape"
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
