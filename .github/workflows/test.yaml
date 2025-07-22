@@ -1,0 +1,59 @@
+name: Deploy test.masonscape.com
+
+on:
+  push:
+    paths:
+      # only re-build if the "test" app actually changed
+      - apps/test/**
+      # or if its workflow (this file) changed
+      - .github/workflows/test.yaml
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      # Build Docker image locally
+      - name: Build Docker image
+        run: pnpm run build-main
+          
+      # Save the built image to a tarball
+      - name: Save Docker image
+        run: docker save -o test-masonscape.tar test-masonscape
+          
+      # Configure SSH connection
+      - name: Configure SSH connection
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} -t rsa ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          ssh-add - <<< "${{ secrets.SSH_KEY }}"
+          
+      # Transfer the image to the droplet and load it
+      - name: Transfer and load Docker image
+        run: |
+          scp -P ${{ secrets.SSH_PORT }} test-masonscape.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/test-masonscape.tar
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker load -i /tmp/test-masonscape.tar && rm /tmp/test-masonscape.tar"
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+          
+      # Deploy the container on the droplet
+      - name: Deploy container
+        run: |
+          ssh -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "docker stop test-masonscape || true; \
+             docker container rm test-masonscape || true; \
+             docker run --name test-masonscape -d -p 3000:3000 test-masonscape"
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
