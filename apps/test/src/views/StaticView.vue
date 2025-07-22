@@ -53,7 +53,6 @@ onMounted(() => {
 <style scoped>
 .canvas {
   background-color: black;
-  z-index: 10000;
 
   overflow: hidden;
 
