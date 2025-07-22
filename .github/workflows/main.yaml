@@ -1,6 +1,12 @@
 name: Deploy www.masonscape.com
 
-on: [push]
+on:
+  push:
+    paths:
+      # only re-build if the "main" app actually changed
+      - apps/main/**
+      # or if its workflow (this file) changed
+      - .github/workflows/main.yaml
 
 jobs:
   build-and-deploy:
