@@ -5,12 +5,18 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const ctxRef = computed(() => canvasRef.value?.getContext('2d'))
 const canvasWidth = ref(0)
 const canvasHeight = ref(0)
+const rainbowMode = ref(false)
+
 
 const drawStatic = (x: number, y: number) => {
   const ctx = ctxRef.value
   if (!ctx) return
 
-  ctx.fillStyle = Math.random() > 0.5 ? 'black' : 'white'
+  if (rainbowMode.value) {
+    ctx.fillStyle = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0')
+  } else {
+    ctx.fillStyle = Math.random() >= 0.5 ? 'black' : 'white'
+  }
   ctx.fillRect(x, y, 1, 1)
 }
 
@@ -39,8 +45,25 @@ watch([canvasWidth, canvasHeight], () => {
   fillPageWithStatic()
 })
 
+const handleKeydown = (e: KeyboardEvent) => {
+  console.log(e.key)
+  if (e.key === ' ') {
+    fillPageWithStatic()
+  } else if (e.key === 'r') {
+    console.log('switching rainbow mode to ', rainbowMode.value)
+    rainbowMode.value = !rainbowMode.value
+    fillPageWithStatic()
+  }
+}
+
 onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+
   handleResize()
+})
+
+onUnmounted(() => {
+  document.addEventListener('keydown', handleKeydown)
 })
 </script>
 
@@ -57,5 +80,8 @@ onMounted(() => {
   overflow: hidden;
 
   image-rendering: optimizeSpeed;
+
+  width: 100%;
+  height: 100%;
 }
 </style>
