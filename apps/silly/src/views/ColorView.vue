@@ -145,7 +145,7 @@ watch(colorInput, (newVal) => {
 })
 
 onMounted(() => {
-  document.title = 'create some colors'
+  document.title = 'create some colors!'
 
   handleNewInput(colorInput.value)
   colorRef.value?.focus()
