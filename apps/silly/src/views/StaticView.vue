@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const ctxRef = computed(() => canvasRef.value?.getContext('2d'))
@@ -47,16 +47,16 @@ const fillPageWithStatic = () => {
   const data = imageData.data
 
   const now = Math.random() * 1000
-  const nowMod = (now / 7) % 255
+  const nowMod = (now) % 255
 
   const [mx, my] = [mouseX.value, mouseY.value]
   
   let i = 0
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const rawRed   = (x * y * mx * my % 255) * mx % 255
-      const rawGreen = (x * y * mx * my % 255) * my % 255
-      const rawBlue  = x * y * mx * my % 255
+      const rawRed   = 0
+      const rawGreen = 0
+      const rawBlue  = Math.sqrt(x) === y / (50) ? 255 : 0
 
       data[i++] = Math.max(0, Math.min(255, rawRed))
       data[i++] = Math.max(0, Math.min(255, rawGreen))

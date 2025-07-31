@@ -12,15 +12,15 @@ COPY apps ./apps
 COPY packages ./packages
 COPY services ./services
 
-# Install dependencies for apps/test
-RUN pnpm install --filter ./apps/test...
+# Install dependencies for apps/silly
+RUN pnpm install --filter ./apps/silly...
 
 # Optimize build step for GitHub
 ENV GENERATE_SOURCEMAP=false
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 # Build the project
-WORKDIR /repo/apps/test
+WORKDIR /repo/apps/silly
 RUN pnpm run build
 
 
@@ -29,5 +29,5 @@ FROM nginx:alpine
 WORKDIR /app
 
 # Copy the built output
-COPY --from=build /repo/apps/test/dist/ /usr/share/nginx/html
-COPY --from=build /repo/apps/test/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /repo/apps/silly/dist/ /usr/share/nginx/html
+COPY --from=build /repo/apps/silly/nginx.conf /etc/nginx/conf.d/default.conf
