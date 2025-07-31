@@ -105,7 +105,7 @@ const colorRef = ref<HTMLElement>()
 
 const handleNewInput = (newVal: string) => {
   console.log('handling', newVal)
-  router.replace({ path: 'color', query: { input: newVal }})
+  // router.replace({ path: 'color', query: { input: newVal }})
   const normalizedInput = newVal.replace(/ /g, '')
   const scoreMap = new Map<string, number>()
   const windowSizes = [3, 4, 5] // experiment with different window sizes
