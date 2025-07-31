@@ -54,10 +54,10 @@ const fillPageWithStatic = () => {
   let i = 0
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      const rawRed   = 0
-      const rawGreen = 0
-      const rawBlue  = Math.sqrt(x) === y / (50) ? 255 : 0
-
+      const rawRed   = (x * y * mx * my % 255) * mx % 255
+      const rawGreen = (x * y * mx * my % 255) * my % 255
+      const rawBlue  = x * y * mx * my % 255
+      
       data[i++] = Math.max(0, Math.min(255, rawRed))
       data[i++] = Math.max(0, Math.min(255, rawGreen))
       data[i++] = Math.max(0, Math.min(255, rawBlue))
