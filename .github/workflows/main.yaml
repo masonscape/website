@@ -7,6 +7,8 @@ on:
       - apps/main/**
       # or if its workflow (this file) changed
       - .github/workflows/main.yaml
+      # or package.json changes
+      - package.json
 
 jobs:
   build-and-deploy:
