@@ -27,6 +27,11 @@ const router = createRouter({
       name: 'color',
       component: () => import('../views/ColorView.vue'),
     },
+    {
+      path: '/dvd',
+      name: 'dvd',
+      component: () => import('../views/DVDView.vue'),
+    },
   ],
 })
 
