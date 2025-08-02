@@ -1,11 +1,12 @@
 <template>
   <div class="square" :style="{ top: dvdY + 'px', left: dvdX + 'px', position: 'absolute' }">
-    <img src="@packages/assets/MasonSquare.svg" width="100" height="100"></img>
+    <img :src="MasonSquare" width="100" height="100"></img>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import MasonSquare from '@packages/assets/MasonSquare.svg'
 
 const viewWidth = ref<number | null>(null)
 const viewHeight = ref<number | null>(null)
