@@ -19,7 +19,8 @@ export default defineConfig({
   server: {
     fs: {
       allow: [
-        fileURLToPath(new URL('../../packages', import.meta.url)), // allow shared assets
+        fileURLToPath(new URL('.', import.meta.url)),
+        fileURLToPath(new URL('../../packages', import.meta.url))
       ],
     },
   },

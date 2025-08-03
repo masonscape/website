@@ -66,7 +66,7 @@ const usernameInput = ref('')
 const messageListRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 
-const { status, data, send } = useWebSocket(`/api/chat`, { autoReconnect: { retries: 10, delay: 1000 } })
+const { status, data, send } = useWebSocket(`ws://localhost:3000/ws/chat`, { autoReconnect: { retries: 10, delay: 1000 } })
 
 watch(data, (raw) => {
   const parsedMessage = JSON.parse(raw) as IncomingMessage

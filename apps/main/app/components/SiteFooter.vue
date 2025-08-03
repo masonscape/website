@@ -1,7 +1,3 @@
-<script setup>
-
-</script>
-
 <template>
   <footer class="footer">
     <p class="copyright">© masonscape.com</p>
@@ -14,6 +10,7 @@
       </NuxtLink>
     </div>
     <div class="button-list">
+      <ThemeSwitcher class="button"/>
       <LinkButton class="button" icon="grommet-icons:github" href="https://github.com/masonscape/website" target="_blank"/>
     </div>
   </footer>
@@ -23,14 +20,14 @@
 .footer {
   position: relative;
   display: flex;
-  background-color: var(--color-primary-95);
+  /* background-color: var(--color-primary-95); */
   width: 100%;
   box-sizing: border-box;
   height: clamp(var(--header-height), var(--header-height), fit-content);
   z-index: 1000;
   align-items: center;
 
-  border-top: 1px var(--color-primary-70) solid;
+  /* border-top: 1px var(--color-primary-70) solid; */
 
   color: color-mix(in srgb, var(--color-secondary) 70%, var(--color-primary));
 }

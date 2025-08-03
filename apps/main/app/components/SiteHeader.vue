@@ -33,31 +33,31 @@ onMounted(() => {
       </div>
       <p class="wordmark">masonscape</p>
     </NuxtLink>
-    <div class="header-links">
+    <!-- <div class="header-links">
       <NuxtLink class="header-link" href="/blog">
         Blog
       </NuxtLink>
-    </div>
-    <div class="button-list">
+    </div> -->
+    <!-- <div class="button-list">
       <ThemeSwitcher class="button"/>
-    </div>
+    </div> -->
   </header>
 </template>
 
 <style scoped>
 .header {
   display: flex;
-  position: relative;
+  position: absolute;
   align-items: center;
   justify-content: center;
   container-type: size;
-  background-color: var(--color-primary-95);
+  /* background-color: var(--color-primary-95); */
   width: 100%;
   top: 0;
   height: var(--header-height);
   z-index: 1000;
 
-  border-bottom: 1px var(--color-primary-70) solid
+  /* border-bottom: 1px var(--color-primary-70) solid */
 }
 
 .button-list {
@@ -89,6 +89,7 @@ onMounted(() => {
 
   padding-left: 1em;
   padding-right: 1em;
+  margin-right: auto;
 
   gap: 0.8rem;
 }

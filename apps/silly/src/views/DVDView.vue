@@ -13,8 +13,10 @@ const viewHeight = ref<number | null>(null)
 
 const dvdX = ref(0)
 const dvdY = ref(0)
-const dvdWidth = ref(100)
-const dvdHeight = ref(100)
+const defaultWidth = 100
+const defaultHeight = 100
+const dvdWidth = ref(defaultWidth)
+const dvdHeight = ref(defaultHeight)
 
 // directionX is 1 if it should be moving to the right, and -1 if it should be moving to the left
 // same with directionY
@@ -27,12 +29,16 @@ const initViewSize = () => {
   viewWidth.value = window.innerWidth
   viewHeight.value = window.innerHeight
 
-  if (viewWidth.value < 100) {
+  if (viewWidth.value < defaultWidth) {
     dvdWidth.value = viewWidth.value
+  } else {
+    dvdWidth.value = defaultWidth
   }
   
-  if (viewHeight.value < 100) {
+  if (viewHeight.value < defaultHeight) {
     dvdHeight.value = viewHeight.value
+  } else {
+    dvdHeight.value = defaultHeight
   }
 }
 
@@ -57,30 +63,24 @@ const gameLoop = () => {
   const dt = (now - lastTime) / 1000
   lastTime = now
 
-  if (dvdY.value === 0) {
-    if (dvdHeight.value === viewHeight.value) {
-      directionY = 0
-    } else {
-      directionY = 1
-    }
+  if (dvdHeight.value === viewHeight.value) {
+    dvdY.value = 0
+    directionY = 0
   } else if (dvdY.value + dvdHeight.value > viewHeight.value) {
     dvdY.value = viewHeight.value - dvdHeight.value
     directionY = -1
-  } else if (dvdY.value < 0) {
+  } else if (dvdY.value <= 0) {
     dvdY.value = 0
     directionY = 1
   }
 
-  if (dvdX.value === 0) {
-    if (dvdWidth.value === viewWidth.value) {
-      directionX = 0
-    } else {
-      directionX = 1
-    }
+  if (dvdWidth.value === viewWidth.value) {
+    dvdX.value = 0
+    directionX = 0
   } else if (dvdX.value + dvdWidth.value > viewWidth.value) {
     dvdX.value = viewWidth.value - dvdWidth.value
     directionX = -1
-  } else if (dvdX.value < 0) {
+  } else if (dvdX.value <= 0) {
     dvdX.value = 0
     directionX = 1
   }

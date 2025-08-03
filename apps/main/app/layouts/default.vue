@@ -20,7 +20,7 @@ useHead({
 <style>
 main {
   flex: 1;
-  padding-top: 4em;
+  padding-top: 6em;
   padding-bottom: 4em;
 }
 
