@@ -23,7 +23,7 @@ const dvdHeight = ref(defaultHeight)
 let directionX = 1
 let directionY = 1
 
-let speed = 100
+let speed = 128
 
 const initViewSize = () => {
   viewWidth.value = window.innerWidth
@@ -92,12 +92,12 @@ const gameLoop = () => {
 }
 
 const handleKeydown = (e: KeyboardEvent) => {
-  console.log(e.key)
   if (e.key === '=') {
-    speed += 100
+    if (speed === 0) return speed = 1
+    speed *= 2
   } else if (e.key === '-') {
-    if (speed < 10) return speed = 0
-    speed -= 100
+    if (speed === 1) return speed = 0
+    speed /= 2
   }
 }
 
